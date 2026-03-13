@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitra Froozen Food - Manajemen Toko</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #1E3A8A; /* Navy Blue */
+            --ice-blue: #DBEAFE; /* Light Blue */
+            --accent-blue: #3B82F6; /* Bright Blue */
+            --text-dark: #1F2937;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #F3F4F6;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header / Navbar */
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--ice-blue);
+        }
+
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .logo-text p {
+            font-size: 0.8rem;
+            color: var(--ice-blue);
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 3rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .welcome-section h2 {
+            font-size: 2.2rem;
+            color: var(--primary-blue);
+            margin-bottom: 10px;
+        }
+
+        .welcome-section p {
+            color: #6B7280;
+            font-size: 1.1rem;
+        }
+
+        /* Grid Pilihan Menu */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .menu-card {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid var(--accent-blue);
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            background-color: var(--ice-blue);
+        }
+
+        .menu-icon {
+            font-size: 3.5rem;
+            color: var(--accent-blue);
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .menu-card p {
+            font-size: 0.95rem;
+            color: #6B7280;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: var(--white);
+            color: #9CA3AF;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+
+        /* Responsiveness untuk HP */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .welcome-section h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <i class="fa-solid fa-snowflake logo-icon"></i>
+            <div class="logo-text">
+                <h1>FITRA FROOZEN FOOD</h1>
+                <p>Sistem Manajemen Toko</p>
+            </div>
+        </div>
+        <div class="user-profile">
+            <i class="fa-solid fa-circle-user" style="font-size: 1.8rem;"></i>
+        </div>
+    </header>
+
+    <main>
+        <div class="welcome-section">
+            <h2>Selamat Datang, Admin!</h2>
+            <p>Pilih menu di bawah ini untuk mengelola operasional toko hari ini.</p>
+        </div>
+
+        <div class="menu-grid">
+            <a href="#" class="menu-card">
+                <i class="fa-solid fa-boxes-stacked menu-icon"></i>
+                <h3>Cek Stok Barang</h3>
+                <p>Pantau ketersediaan produk frozen food secara real-time.</p>
+            </a>
+
+            <a href="#" class="menu-card">
+                <i class="fa-solid fa-clipboard-check menu-icon"></i>
+                <h3>Stok Opname</h3>
+                <p>Lakukan penyesuaian dan pencatatan fisik stok barang di gudang/freezer.</p>
+            </a>
+
+            <a href="#" class="menu-card">
+                <i class="fa-solid fa-receipt menu-icon"></i>
+                <h3>Cetak Struk</h3>
+                <p>Proses transaksi kasir dan cetak bukti pembayaran pelanggan.</p>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Fitra Froozen Food. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
