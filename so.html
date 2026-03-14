@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stok Opname - Fitra Frozen Food</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #1E3A8A;
+            --accent-blue: #3B82F6;
+            --bg-light: #F3F4F6;
+            --white: #FFFFFF;
+            --danger: #EF4444;
+            --success: #10B981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg-light); }
+
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn { color: var(--white); font-size: 1.5rem; text-decoration: none; margin-right: 20px; }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--white);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .header-opname {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--bg-light);
+            padding-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background-color: var(--bg-light);
+            padding: 12px;
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--primary-blue);
+        }
+
+        td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #E5E7EB;
+            vertical-align: middle;
+        }
+
+        .input-stok {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .selisih {
+            font-weight: 600;
+        }
+
+        .negatif { color: var(--danger); }
+        .positif { color: var(--success); }
+
+        .btn-simpan {
+            background-color: var(--success);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            float: right;
+            transition: 0.3s;
+        }
+
+        .btn-simpan:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        .search-box {
+            width: 100%;
+            max-width: 300px;
+            padding: 10px;
+            border: 1px solid #D1D5DB;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .header-opname { flex-direction: column; align-items: flex-start; gap: 10px; }
+            th, td { font-size: 0.8rem; padding: 8px; }
+            .input-stok { width: 60px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+        <div class="header-title">Fitra Frozen Food - Stok Opname</div>
+    </header>
+
+    <div class="container">
+        <div class="card">
+            <div class="header-opname">
+                <div>
+                    <h2>Input Hasil Opname</h2>
+                    <p style="font-size: 0.8rem; color: #666;" id="info-tgl"></p>
+                </div>
+                <input type="text" class="search-box" placeholder="Cari barang...">
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Barang</th>
+                        <th>Stok Sistem</th>
+                        <th>Stok Fisik</th>
+                        <th>Selisih</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-stok">
+                    </tbody>
+            </table>
+
+            <button class="btn-simpan" onclick="simpanOpname()">
+                <i class="fa-solid fa-floppy-disk"></i> SIMPAN PERUBAHAN
+            </button>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Data contoh (nanti ini bisa nyambung ke database kamu)
+        const dataBarang = [
+            { id: 1, nama: "Nugget Fiesta", stokSistem: 50 },
+            { id: 2, nama: "Sosis Bakar", stokSistem: 30 },
+            { id: 3, nama: "Kentang 1kg", stokSistem: 20 },
+            { id: 4, nama: "Cireng Isi", stokSistem: 100 },
+            { id: 5, nama: "Otak-otak", stokSistem: 45 }
+        ];
+
+        function renderTabel() {
+            const tbody = document.getElementById('tabel-stok');
+            tbody.innerHTML = '';
+
+            dataBarang.forEach((item, index) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><strong>${item.nama}</strong></td>
+                        <td id="sistem-${index}">${item.stokSistem}</td>
+                        <td>
+                            <input type="number" class="input-stok" placeholder="0" 
+                                oninput="hitungSelisih(${index}, this.value)">
+                        </td>
+                        <td id="selisih-${index}" class="selisih">0</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function hitungSelisih(index, nilaiFisik) {
+            const stokSistem = dataBarang[index].stokSistem;
+            const fisik = nilaiFisik === "" ? stokSistem : parseInt(nilaiFisik);
+            const selisih = fisik - stokSistem;
+            
+            const elemenSelisih = document.getElementById(`selisih-${index}`);
+            elemenSelisih.innerText = selisih;
+
+            // Kasih warna: Merah kalau kurang, Hijau kalau lebih
+            elemenSelisih.classList.remove('negatif', 'positif');
+            if (selisih < 0) {
+                elemenSelisih.classList.add('negatif');
+            } else if (selisih > 0) {
+                elemenSelisih.classList.add('positif');
+            }
+        }
+
+        function simpanOpname() {
+            if(confirm("Apakah data fisik yang dimasukkan sudah benar? Stok sistem akan diperbarui.")) {
+                alert("Stok berhasil diperbarui!");
+                window.location.href = 'index.html'; // Balik ke menu utama
+            }
+        }
+
+        // Tampilkan tanggal hari ini
+        const tgl = new Date();
+        document.getElementById('info-tgl').innerText = "Tanggal Opname: " + tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+        // Jalankan fungsi tampil tabel
+        renderTabel();
+    </script>
+</body>
+</html>
