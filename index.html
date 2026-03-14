@@ -37,7 +37,6 @@
             color: var(--white);
             padding: 1.5rem 2rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
@@ -147,11 +146,26 @@
         /* Responsiveness untuk HP */
         @media (max-width: 768px) {
             header {
-                flex-direction: column;
-                text-align: center;
+                padding: 1rem;
+                justify-content: center; /* Mengatur posisi ke tengah untuk HP */
+            }
+            .logo-area {
+                gap: 10px;
+            }
+            .logo-icon {
+                font-size: 1.8rem; /* Sedikit dikecilkan biar pas di layar HP */
+            }
+            .logo-text h1 {
+                font-size: 1.2rem; /* Menyesuaikan ukuran font toko */
+            }
+            .logo-text p {
+                font-size: 0.75rem;
             }
             .welcome-section h2 {
                 font-size: 1.8rem;
+            }
+            main {
+                padding: 2rem 1rem; /* Ngurangin padding kiri-kanan biar kotaknya gak terlalu sempit */
             }
         }
     </style>
@@ -166,10 +180,7 @@
                 <p>Sistem Manajemen Toko</p>
             </div>
         </div>
-        <div class="user-profile">
-            <i class="fa-solid fa-circle-user" style="font-size: 1.8rem;"></i>
-        </div>
-    </header>
+        </header>
 
     <main>
         <div class="welcome-section">
