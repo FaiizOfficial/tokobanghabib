@@ -296,3 +296,46 @@
     <script>
         // Fungsi Hapus Barang
         function hapusBarang(tombol) {
+            let baris = tombol.closest('tr'); // Mencari baris tabel tempat tombol berada
+            let namaBarang = baris.cells[0].innerText; // Mengambil nama barang
+            
+            // Munculkan notifikasi konfirmasi
+            let yakin = confirm(`Apakah lu yakin mau menghapus "${namaBarang}" dari daftar stok?`);
+            
+            if (yakin) {
+                baris.remove(); // Menghapus baris jika klik OK
+            }
+        }
+
+        // Fungsi Edit Stok
+        function editStok(tombol) {
+            let baris = tombol.closest('tr');
+            let namaBarang = baris.cells[0].innerText;
+            let selStok = baris.querySelector('.stok-angka');
+            let stokLama = selStok.innerText;
+
+            // Munculkan pop-up input
+            let stokBaru = prompt(`Masukkan jumlah stok baru untuk "${namaBarang}":`, stokLama);
+
+            // Cek apakah user mengisi dan tidak menekan cancel
+            if (stokBaru !== null && stokBaru !== "") {
+                selStok.innerText = stokBaru;
+                updateStatus(baris, parseInt(stokBaru)); // Update warna status
+            }
+        }
+
+        // Fungsi Update Warna Status Otomatis
+        function updateStatus(baris, jumlahStok) {
+            let selStatus = baris.querySelector('.status-badge');
+            
+            if (jumlahStok <= 0) {
+                selStatus.innerHTML = '<span class="badge badge-habis">Habis</span>';
+            } else if (jumlahStok <= 10) {
+                selStatus.innerHTML = '<span class="badge badge-menipis">Menipis</span>';
+            } else {
+                selStatus.innerHTML = '<span class="badge badge-aman">Aman</span>';
+            }
+        }
+    </script>
+</body>
+</html>
