@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cek Stok - Fitra Froozen Food</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-blue: #1E3A8A;
+            --ice-blue: #DBEAFE;
+            --accent-blue: #3B82F6;
+            --text-dark: #1F2937;
+            --white: #FFFFFF;
+            --success: #10B981; /* Hijau */
+            --warning: #F59E0B; /* Kuning/Orange */
+            --danger: #EF4444; /* Merah */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #F3F4F6;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--primary-blue);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            color: var(--white);
+            font-size: 1.5rem;
+            text-decoration: none;
+            margin-right: 20px;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--ice-blue);
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Top Actions (Search & Add) */
+        .top-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #E5E7EB;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            padding: 0.5rem;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .search-box i {
+            color: #9CA3AF;
+        }
+
+        .btn-add {
+            background-color: var(--accent-blue);
+            color: var(--white);
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .btn-add:hover {
+            background-color: #2563EB;
+        }
+
+        /* Table Area */
+        .table-container {
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            overflow-x: auto; /* Biar bisa di-scroll ke samping di HP */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 600px; /* Mencegah tabel terlalu menyusut */
+        }
+
+        thead {
+            background-color: var(--ice-blue);
+            color: var(--primary-blue);
+        }
+
+        th, td {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #E5E7EB;
+        }
+
+        th {
+            font-weight: 600;
+        }
+
+        tbody tr:hover {
+            background-color: #F9FAFB;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .badge-aman {
+            background-color: #D1FAE5;
+            color: var(--success);
+        }
+
+        .badge-menipis {
+            background-color: #FEF3C7;
+            color: var(--warning);
+        }
+
+        .badge-habis {
+            background-color: #FEE2E2;
+            color: var(--danger);
+        }
+
+        /* Action Buttons in Table */
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+
+        .btn-edit { color: var(--accent-blue); }
+        .btn-delete { color: var(--danger); }
+
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Responsiveness untuk HP */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+            }
+            main {
+                padding: 1rem;
+            }
+            .top-actions {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .search-box {
+                max-width: 100%;
+            }
+            .btn-add {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+        <div class="header-title">Cek Stok Barang</div>
+    </header>
+
+    <main>
+        <div class="top-actions">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Cari nama frozen food...">
+            </div>
+            <button class="btn-add">
+                <i class="fa-solid fa-plus"></i> Tambah Barang Baru
+            </button>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Kode</th>
+                        <th>Nama Barang</th>
+                        <th>Kategori</th>
+                        <th>Harga Jual</th>
+                        <th>Sisa Stok</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>FZ-001</td>
+                        <td>Nugget Ayam Fiesta 500g</td>
+                        <td>Olahan Ayam</td>
+                        <td>Rp 45.000</td>
+                        <td>24 Pcs</td>
+                        <td><span class="badge badge-aman">Aman</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-icon btn-edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>FZ-002</td>
+                        <td>Sosis Bakar Champ 1Kg</td>
+                        <td>Olahan Sapi</td>
+                        <td>Rp 65.000</td>
+                        <td>5 Pcs</td>
+                        <td><span class="badge badge-menipis">Menipis</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-icon btn-edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>FZ-003</td>
+                        <td>Kentang Shoestring Farm Frites 1Kg</td>
+                        <td>Cemilan</td>
+                        <td>Rp 35.000</td>
+                        <td>0 Pcs</td>
+                        <td><span class="badge badge-habis">Habis</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-icon btn-edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+</body>
+</html>
