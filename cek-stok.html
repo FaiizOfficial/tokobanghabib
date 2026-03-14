@@ -55,14 +55,8 @@
             transition: color 0.3s;
         }
 
-        .back-btn:hover {
-            color: var(--ice-blue);
-        }
-
-        .header-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-        }
+        .back-btn:hover { color: var(--ice-blue); }
+        .header-title { font-size: 1.2rem; font-weight: 600; }
 
         /* Main Content */
         main {
@@ -103,9 +97,7 @@
             font-size: 0.95rem;
         }
 
-        .search-box i {
-            color: #9CA3AF;
-        }
+        .search-box i { color: #9CA3AF; }
 
         .btn-add {
             background-color: var(--accent-blue);
@@ -121,9 +113,7 @@
             transition: background 0.3s;
         }
 
-        .btn-add:hover {
-            background-color: #2563EB;
-        }
+        .btn-add:hover { background-color: #2563EB; }
 
         /* Table Area */
         .table-container {
@@ -150,15 +140,9 @@
             border-bottom: 1px solid #E5E7EB;
         }
 
-        th {
-            font-weight: 600;
-        }
+        th { font-weight: 600; }
+        tbody tr:hover { background-color: #F9FAFB; }
 
-        tbody tr:hover {
-            background-color: #F9FAFB;
-        }
-
-        /* Status Badges */
         .badge {
             padding: 0.4rem 0.8rem;
             border-radius: 50px;
@@ -167,27 +151,11 @@
             display: inline-block;
         }
 
-        .badge-aman {
-            background-color: #D1FAE5;
-            color: var(--success);
-        }
+        .badge-aman { background-color: #D1FAE5; color: var(--success); }
+        .badge-menipis { background-color: #FEF3C7; color: var(--warning); }
+        .badge-habis { background-color: #FEE2E2; color: var(--danger); }
 
-        .badge-menipis {
-            background-color: #FEF3C7;
-            color: var(--warning);
-        }
-
-        .badge-habis {
-            background-color: #FEE2E2;
-            color: var(--danger);
-        }
-
-        /* Action Buttons */
-        .action-btns {
-            display: flex;
-            gap: 15px;
-        }
-
+        .action-btns { display: flex; gap: 15px; }
         .btn-icon {
             background: none;
             border: none;
@@ -198,23 +166,94 @@
 
         .btn-edit { color: var(--accent-blue); }
         .btn-delete { color: var(--danger); }
+        .btn-icon:hover { transform: scale(1.2); }
 
-        .btn-icon:hover {
-            transform: scale(1.2);
+        /* CUSTOM MODAL (POP-UP) STYLES */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
         }
 
+        .modal-box {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            animation: muncul 0.3s ease-out;
+        }
+
+        @keyframes muncul {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
+            color: var(--primary-blue);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .form-group { margin-bottom: 1rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #4B5563;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            border: 1px solid #D1D5DB;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-group input:focus { border-color: var(--accent-blue); }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 1.5rem;
+        }
+
+        .btn-batal {
+            background: #F3F4F6;
+            color: #4B5563;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-simpan {
+            background: var(--accent-blue);
+            color: var(--white);
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .btn-bahaya { background: var(--danger); }
+
         @media (max-width: 768px) {
-            header { padding: 1rem; }
-            main { padding: 1rem; }
-            .top-actions {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            .top-actions { flex-direction: column; align-items: flex-start; }
             .search-box { max-width: 100%; }
-            .btn-add {
-                width: 100%;
-                justify-content: center;
-            }
+            .btn-add { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -231,13 +270,13 @@
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Cari nama frozen food...">
             </div>
-            <button class="btn-add">
+            <button class="btn-add" onclick="bukaModalTambah()">
                 <i class="fa-solid fa-plus"></i> Tambah Barang Baru
             </button>
         </div>
 
         <div class="table-container">
-            <table>
+            <table id="tabelStok">
                 <thead>
                     <tr>
                         <th>Nama Barang</th>
@@ -257,8 +296,8 @@
                         <td class="status-badge"><span class="badge badge-aman">Aman</span></td>
                         <td>
                             <div class="action-btns">
-                                <button class="btn-icon btn-edit" onclick="editStok(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" onclick="hapusBarang(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -270,8 +309,8 @@
                         <td class="status-badge"><span class="badge badge-menipis">Menipis</span></td>
                         <td>
                             <div class="action-btns">
-                                <button class="btn-icon btn-edit" onclick="editStok(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" onclick="hapusBarang(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -283,8 +322,8 @@
                         <td class="status-badge"><span class="badge badge-habis">Habis</span></td>
                         <td>
                             <div class="action-btns">
-                                <button class="btn-icon btn-edit" onclick="editStok(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" onclick="hapusBarang(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -293,38 +332,164 @@
         </div>
     </main>
 
+    <div class="modal-overlay" id="modalEdit">
+        <div class="modal-box">
+            <h3 class="modal-title">Edit Sisa Stok</h3>
+            <p id="namaBarangEdit" style="margin-bottom: 10px; font-weight: 500;"></p>
+            <div class="form-group">
+                <label>Jumlah Stok Baru</label>
+                <input type="number" id="inputStokBaru" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-batal" onclick="tutupModal('modalEdit')">Batal</button>
+                <button class="btn-simpan" onclick="simpanEditStok()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalHapus">
+        <div class="modal-box">
+            <h3 class="modal-title" style="color: var(--danger);">Hapus Barang?</h3>
+            <p>Yakin mau ngehapus <strong id="namaBarangHapus"></strong> dari daftar stok?</p>
+            <div class="modal-actions">
+                <button class="btn-batal" onclick="tutupModal('modalHapus')">Batal</button>
+                <button class="btn-simpan btn-bahaya" onclick="konfirmasiHapus()">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalTambah">
+        <div class="modal-box">
+            <h3 class="modal-title">Tambah Barang Baru</h3>
+            <div class="form-group">
+                <label>Nama Barang</label>
+                <input type="text" id="inputNamaBarang" placeholder="Cth: Cireng Isi Ayam">
+            </div>
+            <div class="form-group">
+                <label>Kategori</label>
+                <input type="text" id="inputKategori" placeholder="Cth: Cemilan">
+            </div>
+            <div class="form-group">
+                <label>Harga Jual (Rp)</label>
+                <input type="text" id="inputHarga" placeholder="Cth: 15000" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            </div>
+            <div class="form-group">
+                <label>Stok Awal</label>
+                <input type="number" id="inputStokAwal" placeholder="Cth: 10" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-batal" onclick="tutupModal('modalTambah')">Batal</button>
+                <button class="btn-simpan" onclick="simpanBarangBaru()">Simpan Barang</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Fungsi Hapus Barang
-        function hapusBarang(tombol) {
-            let baris = tombol.closest('tr'); // Mencari baris tabel tempat tombol berada
-            let namaBarang = baris.cells[0].innerText; // Mengambil nama barang
+        // Variabel buat nyimpen baris mana yang lagi dipilih (diedit/dihapus)
+        let barisPilihan = null;
+
+        // --- FUNGSI UMUM MODAL ---
+        function tutupModal(idModal) {
+            document.getElementById(idModal).style.display = 'none';
+            barisPilihan = null;
+        }
+
+        // --- FUNGSI EDIT STOK ---
+        function bukaModalEdit(tombol) {
+            barisPilihan = tombol.closest('tr');
+            let namaBarang = barisPilihan.cells[0].innerText;
+            let stokLama = barisPilihan.querySelector('.stok-angka').innerText;
+
+            document.getElementById('namaBarangEdit').innerText = namaBarang;
+            document.getElementById('inputStokBaru').value = stokLama;
             
-            // Munculkan notifikasi konfirmasi
-            let yakin = confirm(`Apakah lu yakin mau menghapus "${namaBarang}" dari daftar stok?`);
+            // Munculin modal (diubah jadi flex biar ke tengah)
+            document.getElementById('modalEdit').style.display = 'flex';
+        }
+
+        function simpanEditStok() {
+            let stokBaru = document.getElementById('inputStokBaru').value;
             
-            if (yakin) {
-                baris.remove(); // Menghapus baris jika klik OK
+            if(stokBaru !== "" && barisPilihan) {
+                barisPilihan.querySelector('.stok-angka').innerText = stokBaru;
+                updateStatus(barisPilihan, parseInt(stokBaru));
+                tutupModal('modalEdit');
+            } else {
+                alert("Stok nggak boleh kosong!");
             }
         }
 
-        // Fungsi Edit Stok
-        function editStok(tombol) {
-            let baris = tombol.closest('tr');
-            let namaBarang = baris.cells[0].innerText;
-            let selStok = baris.querySelector('.stok-angka');
-            let stokLama = selStok.innerText;
+        // --- FUNGSI HAPUS BARANG ---
+        function bukaModalHapus(tombol) {
+            barisPilihan = tombol.closest('tr');
+            let namaBarang = barisPilihan.cells[0].innerText;
 
-            // Munculkan pop-up input
-            let stokBaru = prompt(`Masukkan jumlah stok baru untuk "${namaBarang}":`, stokLama);
+            document.getElementById('namaBarangHapus').innerText = namaBarang;
+            document.getElementById('modalHapus').style.display = 'flex';
+        }
 
-            // Cek apakah user mengisi dan tidak menekan cancel
-            if (stokBaru !== null && stokBaru !== "") {
-                selStok.innerText = stokBaru;
-                updateStatus(baris, parseInt(stokBaru)); // Update warna status
+        function konfirmasiHapus() {
+            if(barisPilihan) {
+                barisPilihan.remove();
+                tutupModal('modalHapus');
             }
         }
 
-        // Fungsi Update Warna Status Otomatis
+        // --- FUNGSI TAMBAH BARANG ---
+        function bukaModalTambah() {
+            // Kosongin inputan dulu tiap kali modal dibuka
+            document.getElementById('inputNamaBarang').value = "";
+            document.getElementById('inputKategori').value = "";
+            document.getElementById('inputHarga').value = "";
+            document.getElementById('inputStokAwal').value = "";
+            
+            document.getElementById('modalTambah').style.display = 'flex';
+        }
+
+        function simpanBarangBaru() {
+            let nama = document.getElementById('inputNamaBarang').value;
+            let kategori = document.getElementById('inputKategori').value;
+            let harga = document.getElementById('inputHarga').value;
+            let stok = document.getElementById('inputStokAwal').value;
+
+            // Cek kalau ada yang kosong
+            if(!nama || !kategori || !harga || !stok) {
+                alert("Semua data barang harus diisi!");
+                return;
+            }
+
+            // Format angka biasa ke Rupiah (biar rapi di tabel)
+            let hargaRupiah = "Rp " + parseInt(harga).toLocaleString('id-ID');
+
+            // Bikin baris baru (HTML)
+            let tabelBody = document.querySelector('#tabelStok tbody');
+            let barisBaru = document.createElement('tr');
+            
+            barisBaru.innerHTML = `
+                <td>${nama}</td>
+                <td>${kategori}</td>
+                <td>${hargaRupiah}</td>
+                <td class="stok-angka">${stok}</td>
+                <td class="status-badge"></td>
+                <td>
+                    <div class="action-btns">
+                        <button class="btn-icon btn-edit" onclick="bukaModalEdit(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                        <button class="btn-icon btn-delete" onclick="bukaModalHapus(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                </td>
+            `;
+
+            // Tentukan status badge-nya
+            updateStatus(barisBaru, parseInt(stok));
+
+            // Masukkin baris baru ke paling atas tabel
+            tabelBody.insertBefore(barisBaru, tabelBody.firstChild);
+
+            // Tutup modal
+            tutupModal('modalTambah');
+        }
+
+        // --- FUNGSI UPDATE STATUS OTOMATIS ---
         function updateStatus(baris, jumlahStok) {
             let selStatus = baris.querySelector('.status-badge');
             
