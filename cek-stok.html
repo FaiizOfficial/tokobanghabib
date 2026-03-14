@@ -14,9 +14,9 @@
             --accent-blue: #3B82F6;
             --text-dark: #1F2937;
             --white: #FFFFFF;
-            --success: #10B981; /* Hijau */
-            --warning: #F59E0B; /* Kuning/Orange */
-            --danger: #EF4444; /* Merah */
+            --success: #10B981; 
+            --warning: #F59E0B; 
+            --danger: #EF4444; 
         }
 
         * {
@@ -73,7 +73,7 @@
             width: 100%;
         }
 
-        /* Top Actions (Search & Add) */
+        /* Top Actions */
         .top-actions {
             display: flex;
             justify-content: space-between;
@@ -130,14 +130,14 @@
             background: var(--white);
             border-radius: 12px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            overflow-x: auto; /* Biar bisa di-scroll ke samping di HP */
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
-            min-width: 600px; /* Mencegah tabel terlalu menyusut */
+            min-width: 600px;
         }
 
         thead {
@@ -182,17 +182,17 @@
             color: var(--danger);
         }
 
-        /* Action Buttons in Table */
+        /* Action Buttons */
         .action-btns {
             display: flex;
-            gap: 10px;
+            gap: 15px;
         }
 
         .btn-icon {
             background: none;
             border: none;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             transition: transform 0.2s;
         }
 
@@ -200,24 +200,17 @@
         .btn-delete { color: var(--danger); }
 
         .btn-icon:hover {
-            transform: scale(1.1);
+            transform: scale(1.2);
         }
 
-        /* Responsiveness untuk HP */
         @media (max-width: 768px) {
-            header {
-                padding: 1rem;
-            }
-            main {
-                padding: 1rem;
-            }
+            header { padding: 1rem; }
+            main { padding: 1rem; }
             .top-actions {
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .search-box {
-                max-width: 100%;
-            }
+            .search-box { max-width: 100%; }
             .btn-add {
                 width: 100%;
                 justify-content: center;
@@ -247,7 +240,6 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Kode</th>
                         <th>Nama Barang</th>
                         <th>Kategori</th>
                         <th>Harga Jual</th>
@@ -258,44 +250,41 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>FZ-001</td>
                         <td>Nugget Ayam Fiesta 500g</td>
                         <td>Olahan Ayam</td>
                         <td>Rp 45.000</td>
-                        <td>24 Pcs</td>
-                        <td><span class="badge badge-aman">Aman</span></td>
+                        <td class="stok-angka">24</td>
+                        <td class="status-badge"><span class="badge badge-aman">Aman</span></td>
                         <td>
                             <div class="action-btns">
-                                <button class="btn-icon btn-edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-icon btn-edit" onclick="editStok(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="hapusBarang(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>FZ-002</td>
                         <td>Sosis Bakar Champ 1Kg</td>
                         <td>Olahan Sapi</td>
                         <td>Rp 65.000</td>
-                        <td>5 Pcs</td>
-                        <td><span class="badge badge-menipis">Menipis</span></td>
+                        <td class="stok-angka">5</td>
+                        <td class="status-badge"><span class="badge badge-menipis">Menipis</span></td>
                         <td>
                             <div class="action-btns">
-                                <button class="btn-icon btn-edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-icon btn-edit" onclick="editStok(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="hapusBarang(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td>FZ-003</td>
                         <td>Kentang Shoestring Farm Frites 1Kg</td>
                         <td>Cemilan</td>
                         <td>Rp 35.000</td>
-                        <td>0 Pcs</td>
-                        <td><span class="badge badge-habis">Habis</span></td>
+                        <td class="stok-angka">0</td>
+                        <td class="status-badge"><span class="badge badge-habis">Habis</span></td>
                         <td>
                             <div class="action-btns">
-                                <button class="btn-icon btn-edit" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-icon btn-edit" onclick="editStok(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="hapusBarang(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -304,5 +293,6 @@
         </div>
     </main>
 
-</body>
-</html>
+    <script>
+        // Fungsi Hapus Barang
+        function hapusBarang(tombol) {
