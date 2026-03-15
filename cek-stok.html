@@ -157,10 +157,11 @@
 
     <script src="produk.js"></script>
 
-    <script>
-        let indexPilihan = null; // Menyimpan index barang yang sedang diedit/dihapus
+  <script src="produk.js"></script>
 
-        // Fungsi menampilkan data dari produk.js ke tabel
+    <script>
+        let indexPilihan = null;
+
         function renderTabel(data = daftarProduk) {
             const tbody = document.getElementById('tabel-stok-body');
             tbody.innerHTML = '';
@@ -193,10 +194,8 @@
             });
         }
 
-        // Tampilkan tabel saat halaman pertama kali dibuka
         window.onload = () => { renderTabel(); };
 
-        // --- FUNGSI MODAL & AKSI ---
         function tutupModal(idModal) {
             document.getElementById(idModal).style.display = 'none';
             indexPilihan = null;
@@ -213,6 +212,7 @@
             let stokBaru = document.getElementById('inputStokBaru').value;
             if (stokBaru !== "") {
                 daftarProduk[indexPilihan].stok = parseInt(stokBaru);
+                simpanData(); // Bikin data permanen di browser
                 renderTabel();
                 tutupModal('modalEdit');
             }
@@ -226,6 +226,7 @@
 
         function konfirmasiHapus() {
             daftarProduk.splice(indexPilihan, 1);
+            simpanData(); // Bikin data permanen di browser
             renderTabel();
             tutupModal('modalHapus');
         }
@@ -245,13 +246,14 @@
             let stok = document.getElementById('inputStokAwal').value;
 
             if (nama && harga && stok) {
-                daftarProduk.unshift({ // Masukkan ke paling atas array
+                daftarProduk.unshift({ 
                     id: Date.now(), 
                     nama: nama, 
                     kategori: kategori, 
                     harga: parseInt(harga), 
                     stok: parseInt(stok) 
                 });
+                simpanData(); // Bikin data permanen di browser
                 renderTabel();
                 tutupModal('modalTambah');
             } else {
@@ -259,7 +261,6 @@
             }
         }
 
-        // --- FUNGSI PENCARIAN (Tambahan biar lengkap) ---
         function cariBarang() {
             let keyword = document.getElementById('inputPencarian').value.toLowerCase();
             let hasilCari = daftarProduk.filter(item => item.nama.toLowerCase().includes(keyword));
