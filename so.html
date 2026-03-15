@@ -171,8 +171,9 @@
 
     <script src="produk.js"></script>
 
+   <script src="produk.js"></script>
+
     <script>
-        // Array untuk nyimpen input sementara waktu nyari barang biar datanya gak ilang
         let dataInputFisik = {}; 
 
         function renderTabelOpname(data = daftarProduk) {
@@ -180,10 +181,7 @@
             tbody.innerHTML = '';
 
             data.forEach((item) => {
-                // Cek apakah sebelumnya udah ada input fisik yang dimasukin
                 let nilaiFisik = dataInputFisik[item.id] !== undefined ? dataInputFisik[item.id] : "";
-                
-                // Hitung selisih awal jika ada nilai yang tersimpan
                 let selisih = 0;
                 let classWarna = "";
                 let teksSelisih = "0";
@@ -213,19 +211,14 @@
             }
         }
 
-        // FUNGSI BARU: Pencarian Barang di Opname
         function cariBarangOpname() {
             let keyword = document.getElementById('inputPencarianOpname').value.toLowerCase();
             let hasilCari = daftarProduk.filter(item => item.nama.toLowerCase().includes(keyword));
             renderTabelOpname(hasilCari);
         }
 
-        // Fungsi Hitung Selisih
         function hitungSelisih(idItem, nilaiFisik) {
-            // Cari data barang berdasarkan ID
             const itemTarget = daftarProduk.find(item => item.id === idItem);
-            
-            // Simpan inputan fisik ke object sementara
             dataInputFisik[idItem] = nilaiFisik === "" ? "" : parseInt(nilaiFisik);
 
             const stokSistem = itemTarget.stok;
@@ -244,17 +237,25 @@
         }
 
         function simpanOpname() {
-            if(confirm("Apakah data fisik yang dimasukkan sudah benar? (Hanya simulasi)")) {
-                alert("Stok berhasil diperbarui! (Catatan: Untuk update permanen, edit file produk.js)");
+            if(confirm("Yakin data fisik udah benar? Stok sistem bakal ngikutin data fisik ini.")) {
+                // Proses update stok di data utama
+                for (let id in dataInputFisik) {
+                    if (dataInputFisik[id] !== "") {
+                        let itemIndex = daftarProduk.findIndex(p => p.id === parseInt(id));
+                        if (itemIndex !== -1) {
+                            daftarProduk[itemIndex].stok = parseInt(dataInputFisik[id]);
+                        }
+                    }
+                }
+                simpanData(); // Bikin data permanen di browser
+                alert("Stok berhasil diperbarui!");
                 window.location.href = 'index.html'; 
             }
         }
 
-        // Tampilkan tanggal hari ini
         const tgl = new Date();
         document.getElementById('info-tgl').innerText = "Tanggal Opname: " + tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
-        // Jalankan saat halaman dibuka
         window.onload = () => {
             renderTabelOpname();
         };
