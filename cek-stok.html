@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cek Stok - Fitra Froozen Food</title>
+    <title>Cek Stok - Fitra Frozen Food</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -19,242 +19,63 @@
             --danger: #EF4444; 
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: #F3F4F6;
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #F3F4F6; color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; }
 
         /* Header */
-        header {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 1rem 2rem;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .back-btn {
-            color: var(--white);
-            font-size: 1.5rem;
-            text-decoration: none;
-            margin-right: 20px;
-            transition: color 0.3s;
-        }
-
+        header { background-color: var(--primary-blue); color: var(--white); padding: 1rem 2rem; display: flex; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 100; }
+        .back-btn { color: var(--white); font-size: 1.5rem; text-decoration: none; margin-right: 20px; transition: color 0.3s; }
         .back-btn:hover { color: var(--ice-blue); }
         .header-title { font-size: 1.2rem; font-weight: 600; }
 
         /* Main Content */
-        main {
-            flex: 1;
-            padding: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
+        main { flex: 1; padding: 2rem; max-width: 1200px; margin: 0 auto; width: 100%; }
 
         /* Top Actions */
-        .top-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background: var(--white);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid #E5E7EB;
-        }
-
-        .search-box input {
-            border: none;
-            outline: none;
-            padding: 0.5rem;
-            width: 100%;
-            font-size: 0.95rem;
-        }
-
+        .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .search-box { display: flex; align-items: center; background: var(--white); padding: 0.5rem 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); width: 100%; max-width: 400px; border: 1px solid #E5E7EB; }
+        .search-box input { border: none; outline: none; padding: 0.5rem; width: 100%; font-size: 0.95rem; }
         .search-box i { color: #9CA3AF; }
 
-        .btn-add {
-            background-color: var(--accent-blue);
-            color: var(--white);
-            padding: 0.8rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: background 0.3s;
-        }
-
+        .btn-add { background-color: var(--accent-blue); color: var(--white); padding: 0.8rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
         .btn-add:hover { background-color: #2563EB; }
 
         /* Table Area */
-        .table-container {
-            background: var(--white);
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-            min-width: 600px;
-        }
-
-        thead {
-            background-color: var(--ice-blue);
-            color: var(--primary-blue);
-        }
-
-        th, td {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #E5E7EB;
-        }
-
+        .table-container { background: var(--white); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        thead { background-color: var(--ice-blue); color: var(--primary-blue); }
+        th, td { padding: 1rem 1.5rem; border-bottom: 1px solid #E5E7EB; }
         th { font-weight: 600; }
         tbody tr:hover { background-color: #F9FAFB; }
 
-        .badge {
-            padding: 0.4rem 0.8rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            display: inline-block;
-        }
-
+        .badge { padding: 0.4rem 0.8rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500; display: inline-block; }
         .badge-aman { background-color: #D1FAE5; color: var(--success); }
         .badge-menipis { background-color: #FEF3C7; color: var(--warning); }
         .badge-habis { background-color: #FEE2E2; color: var(--danger); }
 
         .action-btns { display: flex; gap: 15px; }
-        .btn-icon {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: transform 0.2s;
-        }
-
+        .btn-icon { background: none; border: none; cursor: pointer; font-size: 1.2rem; transition: transform 0.2s; }
         .btn-edit { color: var(--accent-blue); }
         .btn-delete { color: var(--danger); }
         .btn-icon:hover { transform: scale(1.2); }
 
-        /* CUSTOM MODAL (POP-UP) STYLES */
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(2px);
-            z-index: 999;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-box {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            animation: muncul 0.3s ease-out;
-        }
-
-        @keyframes muncul {
-            from { transform: scale(0.9); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        .modal-title {
-            font-size: 1.3rem;
-            color: var(--primary-blue);
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-        }
-
-        .form-group { margin-bottom: 1rem; }
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            color: #4B5563;
-        }
+        /* MODAL */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); z-index: 999; justify-content: center; align-items: center; }
+        .modal-box { background: var(--white); padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); animation: muncul 0.3s ease-out; }
+        @keyframes muncul { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal-title { font-size: 1.3rem; color: var(--primary-blue); margin-bottom: 1.5rem; font-weight: 600; }
         
-        .form-group input {
-            width: 100%;
-            padding: 0.6rem 1rem;
-            border: 1px solid #D1D5DB;
-            border-radius: 6px;
-            font-size: 1rem;
-            outline: none;
-        }
-
+        .form-group { margin-bottom: 1rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #4B5563; }
+        .form-group input { width: 100%; padding: 0.6rem 1rem; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 1rem; outline: none; }
         .form-group input:focus { border-color: var(--accent-blue); }
 
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 1.5rem;
-        }
-
-        .btn-batal {
-            background: #F3F4F6;
-            color: #4B5563;
-            padding: 0.6rem 1.2rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .btn-simpan {
-            background: var(--accent-blue);
-            color: var(--white);
-            padding: 0.6rem 1.2rem;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem; }
+        .btn-batal { background: #F3F4F6; color: #4B5563; padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; }
+        .btn-simpan { background: var(--accent-blue); color: var(--white); padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; }
         .btn-bahaya { background: var(--danger); }
 
-        @media (max-width: 768px) {
-            .top-actions { flex-direction: column; align-items: flex-start; }
-            .search-box { max-width: 100%; }
-            .btn-add { width: 100%; justify-content: center; }
-        }
+        @media (max-width: 768px) { .top-actions { flex-direction: column; align-items: flex-start; } .search-box { max-width: 100%; } .btn-add { width: 100%; justify-content: center; } }
     </style>
 </head>
 <body>
@@ -268,7 +89,7 @@
         <div class="top-actions">
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" placeholder="Cari nama frozen food...">
+                <input type="text" id="inputPencarian" placeholder="Cari nama frozen food..." oninput="cariBarang()">
             </div>
             <button class="btn-add" onclick="bukaModalTambah()">
                 <i class="fa-solid fa-plus"></i> Tambah Barang Baru
@@ -276,7 +97,7 @@
         </div>
 
         <div class="table-container">
-            <table id="tabelStok">
+            <table>
                 <thead>
                     <tr>
                         <th>Nama Barang</th>
@@ -287,46 +108,7 @@
                         <th>Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>Nugget Ayam Fiesta 500g</td>
-                        <td>Olahan Ayam</td>
-                        <td>Rp 45.000</td>
-                        <td class="stok-angka">24</td>
-                        <td class="status-badge"><span class="badge badge-aman">Aman</span></td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sosis Bakar Champ 1Kg</td>
-                        <td>Olahan Sapi</td>
-                        <td>Rp 65.000</td>
-                        <td class="stok-angka">5</td>
-                        <td class="status-badge"><span class="badge badge-menipis">Menipis</span></td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Kentang Shoestring Farm Frites 1Kg</td>
-                        <td>Cemilan</td>
-                        <td>Rp 35.000</td>
-                        <td class="stok-angka">0</td>
-                        <td class="status-badge"><span class="badge badge-habis">Habis</span></td>
-                        <td>
-                            <div class="action-btns">
-                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                            </div>
-                        </td>
-                    </tr>
+                <tbody id="tabel-stok-body">
                 </tbody>
             </table>
         </div>
@@ -338,11 +120,11 @@
             <p id="namaBarangEdit" style="margin-bottom: 10px; font-weight: 500;"></p>
             <div class="form-group">
                 <label>Jumlah Stok Baru</label>
-                <input type="number" id="inputStokBaru" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
+                <input type="number" id="inputStokBaru" min="0">
             </div>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalEdit')">Batal</button>
-                <button class="btn-simpan" onclick="simpanEditStok()">Simpan</button>
+                <button class="btn-simpan" onclick="simpanEditStok()">Simpan (Sementara)</button>
             </div>
         </div>
     </div>
@@ -350,7 +132,7 @@
     <div class="modal-overlay" id="modalHapus">
         <div class="modal-box">
             <h3 class="modal-title" style="color: var(--danger);">Hapus Barang?</h3>
-            <p>Yakin mau ngehapus <strong id="namaBarangHapus"></strong> dari daftar stok?</p>
+            <p>Yakin mau ngehapus <strong id="namaBarangHapus"></strong> dari layar?</p>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalHapus')">Batal</button>
                 <button class="btn-simpan btn-bahaya" onclick="konfirmasiHapus()">Ya, Hapus</button>
@@ -361,88 +143,98 @@
     <div class="modal-overlay" id="modalTambah">
         <div class="modal-box">
             <h3 class="modal-title">Tambah Barang Baru</h3>
-            <div class="form-group">
-                <label>Nama Barang</label>
-                <input type="text" id="inputNamaBarang" placeholder="Cth: Cireng Isi Ayam">
-            </div>
-            <div class="form-group">
-                <label>Kategori</label>
-                <input type="text" id="inputKategori" placeholder="Cth: Cemilan">
-            </div>
-            <div class="form-group">
-                <label>Harga Jual (Rp)</label>
-                <input type="text" id="inputHarga" placeholder="Cth: 15000" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-            </div>
-            <div class="form-group">
-                <label>Stok Awal</label>
-                <input type="number" id="inputStokAwal" placeholder="Cth: 10" onkeypress="return event.charCode >= 48 && event.charCode <= 57">
-            </div>
+            <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Data yang ditambah dari sini hanya tampil sementara. Untuk permanen, ketik langsung di file <b>produk.js</b>.</p>
+            <div class="form-group"><label>Nama Barang</label><input type="text" id="inputNamaBarang"></div>
+            <div class="form-group"><label>Kategori</label><input type="text" id="inputKategori"></div>
+            <div class="form-group"><label>Harga Jual (Rp)</label><input type="number" id="inputHarga"></div>
+            <div class="form-group"><label>Stok Awal</label><input type="number" id="inputStokAwal"></div>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalTambah')">Batal</button>
-                <button class="btn-simpan" onclick="simpanBarangBaru()">Simpan Barang</button>
+                <button class="btn-simpan" onclick="simpanBarangBaru()">Simpan</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // Variabel buat nyimpen baris mana yang lagi dipilih (diedit/dihapus)
-        let barisPilihan = null;
+    <script src="produk.js"></script>
 
-        // --- FUNGSI UMUM MODAL ---
-        function tutupModal(idModal) {
-            document.getElementById(idModal).style.display = 'none';
-            barisPilihan = null;
+    <script>
+        let indexPilihan = null; // Menyimpan index barang yang sedang diedit/dihapus
+
+        // Fungsi menampilkan data dari produk.js ke tabel
+        function renderTabel(data = daftarProduk) {
+            const tbody = document.getElementById('tabel-stok-body');
+            tbody.innerHTML = '';
+
+            data.forEach((item, index) => {
+                let statusBadge = '';
+                if (item.stok <= 0) {
+                    statusBadge = '<span class="badge badge-habis">Habis</span>';
+                } else if (item.stok <= 10) {
+                    statusBadge = '<span class="badge badge-menipis">Menipis</span>';
+                } else {
+                    statusBadge = '<span class="badge badge-aman">Aman</span>';
+                }
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.nama}</td>
+                        <td>${item.kategori || '-'}</td>
+                        <td>Rp ${item.harga.toLocaleString('id-ID')}</td>
+                        <td class="stok-angka">${item.stok}</td>
+                        <td class="status-badge">${statusBadge}</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(${index})" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(${index})" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
         }
 
-        // --- FUNGSI EDIT STOK ---
-        function bukaModalEdit(tombol) {
-            barisPilihan = tombol.closest('tr');
-            let namaBarang = barisPilihan.cells[0].innerText;
-            let stokLama = barisPilihan.querySelector('.stok-angka').innerText;
+        // Tampilkan tabel saat halaman pertama kali dibuka
+        window.onload = () => { renderTabel(); };
 
-            document.getElementById('namaBarangEdit').innerText = namaBarang;
-            document.getElementById('inputStokBaru').value = stokLama;
-            
-            // Munculin modal (diubah jadi flex biar ke tengah)
+        // --- FUNGSI MODAL & AKSI ---
+        function tutupModal(idModal) {
+            document.getElementById(idModal).style.display = 'none';
+            indexPilihan = null;
+        }
+
+        function bukaModalEdit(index) {
+            indexPilihan = index;
+            document.getElementById('namaBarangEdit').innerText = daftarProduk[index].nama;
+            document.getElementById('inputStokBaru').value = daftarProduk[index].stok;
             document.getElementById('modalEdit').style.display = 'flex';
         }
 
         function simpanEditStok() {
             let stokBaru = document.getElementById('inputStokBaru').value;
-            
-            if(stokBaru !== "" && barisPilihan) {
-                barisPilihan.querySelector('.stok-angka').innerText = stokBaru;
-                updateStatus(barisPilihan, parseInt(stokBaru));
+            if (stokBaru !== "") {
+                daftarProduk[indexPilihan].stok = parseInt(stokBaru);
+                renderTabel();
                 tutupModal('modalEdit');
-            } else {
-                alert("Stok nggak boleh kosong!");
             }
         }
 
-        // --- FUNGSI HAPUS BARANG ---
-        function bukaModalHapus(tombol) {
-            barisPilihan = tombol.closest('tr');
-            let namaBarang = barisPilihan.cells[0].innerText;
-
-            document.getElementById('namaBarangHapus').innerText = namaBarang;
+        function bukaModalHapus(index) {
+            indexPilihan = index;
+            document.getElementById('namaBarangHapus').innerText = daftarProduk[index].nama;
             document.getElementById('modalHapus').style.display = 'flex';
         }
 
         function konfirmasiHapus() {
-            if(barisPilihan) {
-                barisPilihan.remove();
-                tutupModal('modalHapus');
-            }
+            daftarProduk.splice(indexPilihan, 1);
+            renderTabel();
+            tutupModal('modalHapus');
         }
 
-        // --- FUNGSI TAMBAH BARANG ---
         function bukaModalTambah() {
-            // Kosongin inputan dulu tiap kali modal dibuka
             document.getElementById('inputNamaBarang').value = "";
             document.getElementById('inputKategori').value = "";
             document.getElementById('inputHarga').value = "";
             document.getElementById('inputStokAwal').value = "";
-            
             document.getElementById('modalTambah').style.display = 'flex';
         }
 
@@ -452,54 +244,26 @@
             let harga = document.getElementById('inputHarga').value;
             let stok = document.getElementById('inputStokAwal').value;
 
-            // Cek kalau ada yang kosong
-            if(!nama || !kategori || !harga || !stok) {
-                alert("Semua data barang harus diisi!");
-                return;
+            if (nama && harga && stok) {
+                daftarProduk.unshift({ // Masukkan ke paling atas array
+                    id: Date.now(), 
+                    nama: nama, 
+                    kategori: kategori, 
+                    harga: parseInt(harga), 
+                    stok: parseInt(stok) 
+                });
+                renderTabel();
+                tutupModal('modalTambah');
+            } else {
+                alert("Harap isi nama, harga, dan stok!");
             }
-
-            // Format angka biasa ke Rupiah (biar rapi di tabel)
-            let hargaRupiah = "Rp " + parseInt(harga).toLocaleString('id-ID');
-
-            // Bikin baris baru (HTML)
-            let tabelBody = document.querySelector('#tabelStok tbody');
-            let barisBaru = document.createElement('tr');
-            
-            barisBaru.innerHTML = `
-                <td>${nama}</td>
-                <td>${kategori}</td>
-                <td>${hargaRupiah}</td>
-                <td class="stok-angka">${stok}</td>
-                <td class="status-badge"></td>
-                <td>
-                    <div class="action-btns">
-                        <button class="btn-icon btn-edit" onclick="bukaModalEdit(this)" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                        <button class="btn-icon btn-delete" onclick="bukaModalHapus(this)" title="Hapus"><i class="fa-solid fa-trash"></i></button>
-                    </div>
-                </td>
-            `;
-
-            // Tentukan status badge-nya
-            updateStatus(barisBaru, parseInt(stok));
-
-            // Masukkin baris baru ke paling atas tabel
-            tabelBody.insertBefore(barisBaru, tabelBody.firstChild);
-
-            // Tutup modal
-            tutupModal('modalTambah');
         }
 
-        // --- FUNGSI UPDATE STATUS OTOMATIS ---
-        function updateStatus(baris, jumlahStok) {
-            let selStatus = baris.querySelector('.status-badge');
-            
-            if (jumlahStok <= 0) {
-                selStatus.innerHTML = '<span class="badge badge-habis">Habis</span>';
-            } else if (jumlahStok <= 10) {
-                selStatus.innerHTML = '<span class="badge badge-menipis">Menipis</span>';
-            } else {
-                selStatus.innerHTML = '<span class="badge badge-aman">Aman</span>';
-            }
+        // --- FUNGSI PENCARIAN (Tambahan biar lengkap) ---
+        function cariBarang() {
+            let keyword = document.getElementById('inputPencarian').value.toLowerCase();
+            let hasilCari = daftarProduk.filter(item => item.nama.toLowerCase().includes(keyword));
+            renderTabel(hasilCari);
         }
     </script>
 </body>
