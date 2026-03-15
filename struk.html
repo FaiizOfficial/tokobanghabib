@@ -282,8 +282,10 @@
             }
         }
 
-        function cetakStruk() {
+            function cetakStruk() {
             const tunai = document.getElementById('input-tunai').value;
+            
+            // 1. Validasi
             if (keranjang.length === 0) {
                 alert("Pilih barang dulu!");
                 return;
@@ -292,7 +294,35 @@
                 alert("Uang tunai kurang!");
                 return;
             }
+
+            // 2. Proses Kurangi Stok
+            keranjang.forEach(itemBeli => {
+                // Cari barang di data pusat (produk.js) yang namanya sama persis
+                let barangDiSistem = daftarProduk.find(p => p.nama === itemBeli.nama);
+                
+                if (barangDiSistem) {
+                    // Kurangi stoknya sesuai jumlah (qty) yang dibeli
+                    barangDiSistem.stok -= itemBeli.qty;
+                    
+                    // Jaga-jaga biar stok nggak jadi minus kalau ada salah hitung fisik
+                    if (barangDiSistem.stok < 0) {
+                        barangDiSistem.stok = 0;
+                    }
+                }
+            });
+
+            // 3. Simpan perubahan stok ke localStorage
+            simpanData(); 
+
+            // 4. Buka jendela Print
             window.print();
+
+            // 5. Otomatis reset keranjang setelah nge-print biar siap buat konsumen selanjutnya
+            setTimeout(() => {
+                keranjang = [];
+                document.getElementById('input-tunai').value = '';
+                updateTampilanStruk();
+            }, 1000); // Jeda 1 detik biar nggak kaget
         }
     </script>
 </body>
