@@ -48,6 +48,7 @@
         .item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; overflow-y: auto; max-height: 60vh; }
         .item-box { background: var(--ice-blue); padding: 12px; border-radius: 10px; cursor: pointer; text-align: center; border: 2px solid transparent; transition: 0.2s; }
         .item-box:hover { border-color: var(--accent-blue); transform: translateY(-3px); }
+        .item-box h4 { font-size: 0.85rem; margin-bottom: 5px; color: var(--primary-blue); }
 
         /* Sisi Kanan: Tampilan Struk */
         .pos-right { background: var(--white); border-radius: 12px; display: flex; flex-direction: column; box-shadow: 0 2px 10px rgba(0,0,0,0.1); height: fit-content; }
@@ -116,25 +117,11 @@
     <main>
         <div class="pos-left no-print">
             <div class="card">
-                <input type="text" class="search-item" placeholder="Cari barang...">
-                <div class="item-grid">
-                    <div class="item-box" onclick="tambahKeStruk('Nugget Fiesta', 45000)">
-                        <h4>Nugget Fiesta</h4>
-                        <p>45.000</p>
+                <input type="text" class="search-item" id="inputPencarianKasir" placeholder="Cari barang..." oninput="cariBarangKasir()" style="width: 100%; padding: 12px; border: 1px solid #D1D5DB; border-radius: 8px; margin-bottom: 15px;">
+                
+                <div class="item-grid" id="menu-grid">
                     </div>
-                    <div class="item-box" onclick="tambahKeStruk('Sosis Bakar', 65000)">
-                        <h4>Sosis Bakar</h4>
-                        <p>65.000</p>
-                    </div>
-                    <div class="item-box" onclick="tambahKeStruk('Kentang 1kg', 35000)">
-                        <h4>Kentang 1kg</h4>
-                        <p>35.000</p>
-                    </div>
-                    <div class="item-box" onclick="tambahKeStruk('Cireng Isi', 15000)">
-                        <h4>Cireng Isi</h4>
-                        <p>15.000</p>
-                    </div>
-                </div>
+
             </div>
         </div>
 
@@ -188,9 +175,38 @@
         </div>
     </main>
 
+    <script src="produk.js"></script>
+
     <script>
         let keranjang = [];
         let total = 0;
+
+        // FUNGSI BARU: Menampilkan menu barang dari produk.js
+        function renderMenuKasir(data = daftarProduk) {
+            const grid = document.getElementById('menu-grid');
+            grid.innerHTML = '';
+            
+            data.forEach(item => {
+                grid.innerHTML += `
+                    <div class="item-box" onclick="tambahKeStruk('${item.nama}', ${item.harga})">
+                        <h4>${item.nama}</h4>
+                        <p>${item.harga.toLocaleString('id-ID')}</p>
+                    </div>
+                `;
+            });
+        }
+
+        // FUNGSI BARU: Pencarian menu kasir
+        function cariBarangKasir() {
+            let keyword = document.getElementById('inputPencarianKasir').value.toLowerCase();
+            let hasilCari = daftarProduk.filter(item => item.nama.toLowerCase().includes(keyword));
+            renderMenuKasir(hasilCari);
+        }
+
+        // Jalankan saat halaman dibuka
+        window.onload = () => {
+            renderMenuKasir();
+        };
 
         function updateTime() {
             const tgl = new Date();
