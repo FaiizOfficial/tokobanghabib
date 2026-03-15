@@ -52,12 +52,19 @@
             margin-bottom: 20px;
             border-bottom: 2px solid var(--bg-light);
             padding-bottom: 10px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            min-width: 600px;
         }
 
         th {
@@ -114,12 +121,11 @@
             padding: 10px;
             border: 1px solid #D1D5DB;
             border-radius: 8px;
-            margin-bottom: 15px;
         }
 
         @media (max-width: 600px) {
-            .header-opname { flex-direction: column; align-items: flex-start; gap: 10px; }
-            th, td { font-size: 0.8rem; padding: 8px; }
+            .header-opname { flex-direction: column; align-items: flex-start; }
+            th, td { font-size: 0.85rem; padding: 10px; }
             .input-stok { width: 60px; }
         }
     </style>
@@ -138,21 +144,23 @@
                     <h2>Input Hasil Opname</h2>
                     <p style="font-size: 0.8rem; color: #666;" id="info-tgl"></p>
                 </div>
-                <input type="text" class="search-box" placeholder="Cari barang...">
+                <input type="text" class="search-box" id="inputPencarianOpname" placeholder="Cari barang..." oninput="cariBarangOpname()">
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nama Barang</th>
-                        <th>Stok Sistem</th>
-                        <th>Stok Fisik</th>
-                        <th>Selisih</th>
-                    </tr>
-                </thead>
-                <tbody id="tabel-stok">
-                    </tbody>
-            </table>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama Barang</th>
+                            <th>Stok Sistem</th>
+                            <th>Stok Fisik</th>
+                            <th>Selisih</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-stok">
+                        </tbody>
+                </table>
+            </div>
 
             <button class="btn-simpan" onclick="simpanOpname()">
                 <i class="fa-solid fa-floppy-disk"></i> SIMPAN PERUBAHAN
@@ -161,44 +169,72 @@
         </div>
     </div>
 
-    <script>
-        // Data contoh (nanti ini bisa nyambung ke database kamu)
-        const dataBarang = [
-            { id: 1, nama: "Nugget Fiesta", stokSistem: 50 },
-            { id: 2, nama: "Sosis Bakar", stokSistem: 30 },
-            { id: 3, nama: "Kentang 1kg", stokSistem: 20 },
-            { id: 4, nama: "Cireng Isi", stokSistem: 100 },
-            { id: 5, nama: "Otak-otak", stokSistem: 45 }
-        ];
+    <script src="produk.js"></script>
 
-        function renderTabel() {
+    <script>
+        // Array untuk nyimpen input sementara waktu nyari barang biar datanya gak ilang
+        let dataInputFisik = {}; 
+
+        function renderTabelOpname(data = daftarProduk) {
             const tbody = document.getElementById('tabel-stok');
             tbody.innerHTML = '';
 
-            dataBarang.forEach((item, index) => {
+            data.forEach((item) => {
+                // Cek apakah sebelumnya udah ada input fisik yang dimasukin
+                let nilaiFisik = dataInputFisik[item.id] !== undefined ? dataInputFisik[item.id] : "";
+                
+                // Hitung selisih awal jika ada nilai yang tersimpan
+                let selisih = 0;
+                let classWarna = "";
+                let teksSelisih = "0";
+
+                if(nilaiFisik !== "") {
+                    selisih = nilaiFisik - item.stok;
+                    teksSelisih = selisih;
+                    if (selisih < 0) classWarna = "negatif";
+                    else if (selisih > 0) classWarna = "positif";
+                }
+
                 tbody.innerHTML += `
                     <tr>
                         <td><strong>${item.nama}</strong></td>
-                        <td id="sistem-${index}">${item.stokSistem}</td>
+                        <td id="sistem-${item.id}">${item.stok}</td>
                         <td>
-                            <input type="number" class="input-stok" placeholder="0" 
-                                oninput="hitungSelisih(${index}, this.value)">
+                            <input type="number" class="input-stok" placeholder="0" value="${nilaiFisik}" 
+                                oninput="hitungSelisih(${item.id}, this.value)">
                         </td>
-                        <td id="selisih-${index}" class="selisih">0</td>
+                        <td id="selisih-${item.id}" class="selisih ${classWarna}">${teksSelisih}</td>
                     </tr>
                 `;
             });
+
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#999;">Barang tidak ditemukan</td></tr>`;
+            }
         }
 
-        function hitungSelisih(index, nilaiFisik) {
-            const stokSistem = dataBarang[index].stokSistem;
+        // FUNGSI BARU: Pencarian Barang di Opname
+        function cariBarangOpname() {
+            let keyword = document.getElementById('inputPencarianOpname').value.toLowerCase();
+            let hasilCari = daftarProduk.filter(item => item.nama.toLowerCase().includes(keyword));
+            renderTabelOpname(hasilCari);
+        }
+
+        // Fungsi Hitung Selisih
+        function hitungSelisih(idItem, nilaiFisik) {
+            // Cari data barang berdasarkan ID
+            const itemTarget = daftarProduk.find(item => item.id === idItem);
+            
+            // Simpan inputan fisik ke object sementara
+            dataInputFisik[idItem] = nilaiFisik === "" ? "" : parseInt(nilaiFisik);
+
+            const stokSistem = itemTarget.stok;
             const fisik = nilaiFisik === "" ? stokSistem : parseInt(nilaiFisik);
             const selisih = fisik - stokSistem;
             
-            const elemenSelisih = document.getElementById(`selisih-${index}`);
+            const elemenSelisih = document.getElementById(`selisih-${idItem}`);
             elemenSelisih.innerText = selisih;
 
-            // Kasih warna: Merah kalau kurang, Hijau kalau lebih
             elemenSelisih.classList.remove('negatif', 'positif');
             if (selisih < 0) {
                 elemenSelisih.classList.add('negatif');
@@ -208,9 +244,9 @@
         }
 
         function simpanOpname() {
-            if(confirm("Apakah data fisik yang dimasukkan sudah benar? Stok sistem akan diperbarui.")) {
-                alert("Stok berhasil diperbarui!");
-                window.location.href = 'index.html'; // Balik ke menu utama
+            if(confirm("Apakah data fisik yang dimasukkan sudah benar? (Hanya simulasi)")) {
+                alert("Stok berhasil diperbarui! (Catatan: Untuk update permanen, edit file produk.js)");
+                window.location.href = 'index.html'; 
             }
         }
 
@@ -218,8 +254,10 @@
         const tgl = new Date();
         document.getElementById('info-tgl').innerText = "Tanggal Opname: " + tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
-        // Jalankan fungsi tampil tabel
-        renderTabel();
+        // Jalankan saat halaman dibuka
+        window.onload = () => {
+            renderTabelOpname();
+        };
     </script>
 </body>
 </html>
