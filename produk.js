@@ -1,21 +1,34 @@
-// File: produk.js
+// Link Google Apps Script sebagai jembatan ke Google Sheets
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwk7BlYuCi7MK_uLHX4EGpqBH4-tXPJtUk_9b4yebjGNdgsx5I0pPh2P92utLgyKLlZ/exec";
 
-const dataDefault = [
-    { id: 1, nama: "Nugget Ayam Fiesta 500g", kategori: "Olahan Ayam", harga: 45000, stok: 24 },
-    { id: 2, nama: "Sosis Bakar Champ 1Kg", kategori: "Olahan Sapi", harga: 65000, stok: 5 },
-    { id: 3, nama: "Kentang Shoestring Farm Frites 1Kg", kategori: "Cemilan", harga: 35000, stok: 0 }
-];
-
-let dataLokal = localStorage.getItem('dataStokFitra');
 let daftarProduk = [];
 
-if (dataLokal === null) {
-    daftarProduk = dataDefault;
-    localStorage.setItem('dataStokFitra', JSON.stringify(daftarProduk));
-} else {
-    daftarProduk = JSON.parse(dataLokal);
+// Fungsi untuk mengambil data terbaru dari Google Sheets
+async function muatData() {
+    try {
+        const response = await fetch(SCRIPT_URL);
+        daftarProduk = await response.json();
+        
+        // Cek halaman apa yang sedang dibuka, lalu render tabelnya
+        if (typeof renderTabel === 'function') renderTabel();
+        if (typeof renderTabelOpname === 'function') renderTabelOpname();
+    } catch (e) {
+        console.error("Gagal muat data dari database:", e);
+        alert("Gagal terhubung ke database. Pastikan internet lancar.");
+    }
 }
 
-function simpanData() {
-    localStorage.setItem('dataStokFitra', JSON.stringify(daftarProduk));
+// Fungsi untuk mengirim perintah (tambah/edit/hapus) ke Google Sheets
+async function kirimKeCloud(data) {
+    try {
+        await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+        // Setelah berhasil update di server, ambil data terbaru lagi
+        await muatData(); 
+    } catch (e) {
+        console.error("Gagal menyimpan data:", e);
+        alert("Gagal menyimpan perubahan ke database!");
+    }
 }
