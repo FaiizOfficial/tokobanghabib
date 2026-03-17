@@ -124,7 +124,7 @@
             </div>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalEdit')">Batal</button>
-                <button class="btn-simpan" onclick="simpanEditStok()">Simpan (Sementara)</button>
+                <button class="btn-simpan" id="btnSimpanEdit" onclick="simpanEditStok()">Simpan ke Database</button>
             </div>
         </div>
     </div>
@@ -132,10 +132,10 @@
     <div class="modal-overlay" id="modalHapus">
         <div class="modal-box">
             <h3 class="modal-title" style="color: var(--danger);">Hapus Barang?</h3>
-            <p>Yakin mau ngehapus <strong id="namaBarangHapus"></strong> dari layar?</p>
+            <p>Yakin mau ngehapus <strong id="namaBarangHapus"></strong> dari database?</p>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalHapus')">Batal</button>
-                <button class="btn-simpan btn-bahaya" onclick="konfirmasiHapus()">Ya, Hapus</button>
+                <button class="btn-simpan btn-bahaya" id="btnSimpanHapus" onclick="konfirmasiHapus()">Ya, Hapus</button>
             </div>
         </div>
     </div>
@@ -143,14 +143,14 @@
     <div class="modal-overlay" id="modalTambah">
         <div class="modal-box">
             <h3 class="modal-title">Tambah Barang Baru</h3>
-            <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Data yang ditambah dari sini hanya tampil sementara. Untuk permanen, ketik langsung di file <b>produk.js</b>.</p>
+            <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Data akan langsung tersimpan permanen ke Google Sheets.</p>
             <div class="form-group"><label>Nama Barang</label><input type="text" id="inputNamaBarang"></div>
             <div class="form-group"><label>Kategori</label><input type="text" id="inputKategori"></div>
             <div class="form-group"><label>Harga Jual (Rp)</label><input type="number" id="inputHarga"></div>
             <div class="form-group"><label>Stok Awal</label><input type="number" id="inputStokAwal"></div>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalTambah')">Batal</button>
-                <button class="btn-simpan" onclick="simpanBarangBaru()">Simpan</button>
+                <button class="btn-simpan" id="btnSimpanTambah" onclick="simpanBarangBaru()">Simpan ke Database</button>
             </div>
         </div>
     </div>
@@ -158,13 +158,13 @@
     <script src="produk.js"></script>
 
     <script>
-        let indexPilihan = null;
+        let idPilihan = null;
 
         function renderTabel(data = daftarProduk) {
             const tbody = document.getElementById('tabel-stok-body');
             tbody.innerHTML = '';
 
-            data.forEach((item, index) => {
+            data.forEach((item) => {
                 let statusBadge = '';
                 if (item.stok <= 0) {
                     statusBadge = '<span class="badge badge-habis">Habis</span>';
@@ -183,8 +183,8 @@
                         <td class="status-badge">${statusBadge}</td>
                         <td>
                             <div class="action-btns">
-                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(${index})" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(${index})" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(${item.id})" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(${item.id})" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -192,41 +192,62 @@
             });
         }
 
-        window.onload = () => { renderTabel(); };
+        // Memuat data dari produk.js saat halaman dibuka
+        window.onload = () => {
+            if (typeof muatData === 'function') {
+                muatData();
+            } else {
+                renderTabel();
+            }
+        };
 
         function tutupModal(idModal) {
             document.getElementById(idModal).style.display = 'none';
-            indexPilihan = null;
+            idPilihan = null;
         }
 
-        function bukaModalEdit(index) {
-            indexPilihan = index;
-            document.getElementById('namaBarangEdit').innerText = daftarProduk[index].nama;
-            document.getElementById('inputStokBaru').value = daftarProduk[index].stok;
-            document.getElementById('modalEdit').style.display = 'flex';
+        function bukaModalEdit(id) {
+            idPilihan = id;
+            let item = daftarProduk.find(p => p.id === id);
+            if(item) {
+                document.getElementById('namaBarangEdit').innerText = item.nama;
+                document.getElementById('inputStokBaru').value = item.stok;
+                document.getElementById('modalEdit').style.display = 'flex';
+            }
         }
 
-        function simpanEditStok() {
+        async function simpanEditStok() {
             let stokBaru = document.getElementById('inputStokBaru').value;
-            if (stokBaru !== "") {
-                daftarProduk[indexPilihan].stok = parseInt(stokBaru);
-                simpanData(); // Bikin data permanen di browser
-                renderTabel();
+            if (stokBaru !== "" && idPilihan !== null) {
+                let btn = document.getElementById('btnSimpanEdit');
+                btn.innerText = "Menyimpan...";
+                
+                await kirimKeCloud({ action: 'update', id: idPilihan, stok: parseInt(stokBaru) });
+                
+                btn.innerText = "Simpan ke Database";
                 tutupModal('modalEdit');
             }
         }
 
-        function bukaModalHapus(index) {
-            indexPilihan = index;
-            document.getElementById('namaBarangHapus').innerText = daftarProduk[index].nama;
-            document.getElementById('modalHapus').style.display = 'flex';
+        function bukaModalHapus(id) {
+            idPilihan = id;
+            let item = daftarProduk.find(p => p.id === id);
+            if(item) {
+                document.getElementById('namaBarangHapus').innerText = item.nama;
+                document.getElementById('modalHapus').style.display = 'flex';
+            }
         }
 
-        function konfirmasiHapus() {
-            daftarProduk.splice(indexPilihan, 1);
-            simpanData(); // Bikin data permanen di browser
-            renderTabel();
-            tutupModal('modalHapus');
+        async function konfirmasiHapus() {
+            if (idPilihan !== null) {
+                let btn = document.getElementById('btnSimpanHapus');
+                btn.innerText = "Menghapus...";
+                
+                await kirimKeCloud({ action: 'hapus', id: idPilihan });
+                
+                btn.innerText = "Ya, Hapus";
+                tutupModal('modalHapus');
+            }
         }
 
         function bukaModalTambah() {
@@ -237,22 +258,25 @@
             document.getElementById('modalTambah').style.display = 'flex';
         }
 
-        function simpanBarangBaru() {
+        async function simpanBarangBaru() {
             let nama = document.getElementById('inputNamaBarang').value;
             let kategori = document.getElementById('inputKategori').value;
             let harga = document.getElementById('inputHarga').value;
             let stok = document.getElementById('inputStokAwal').value;
 
             if (nama && harga && stok) {
-                daftarProduk.unshift({ 
-                    id: Date.now(), 
+                let btn = document.getElementById('btnSimpanTambah');
+                btn.innerText = "Menyimpan...";
+                
+                await kirimKeCloud({ 
+                    action: 'tambah', 
                     nama: nama, 
                     kategori: kategori, 
                     harga: parseInt(harga), 
                     stok: parseInt(stok) 
                 });
-                simpanData(); // Bikin data permanen di browser
-                renderTabel();
+                
+                btn.innerText = "Simpan ke Database";
                 tutupModal('modalTambah');
             } else {
                 alert("Harap isi nama, harga, dan stok!");
