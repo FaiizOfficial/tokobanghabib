@@ -178,9 +178,8 @@
             grid.innerHTML = '';
             
             data.forEach(item => {
-                // Modifikasi: Mengirimkan ID juga ke fungsi tambahKeStruk
                 grid.innerHTML += `
-                    <div class="item-box" onclick="tambahKeStruk(${item.id}, '${item.nama.replace(/'/g, "\\'")}', ${item.harga})">
+                    <div class="item-box" onclick="tambahKeStruk('${item.id}', '${item.nama.replace(/'/g, "\\'")}', ${item.harga})">
                         <h4>${item.nama}</h4>
                         <p>${item.harga.toLocaleString('id-ID')}</p>
                     </div>
@@ -199,11 +198,8 @@
         }
 
         window.onload = () => {
-            if (typeof muatData === 'function') {
-                muatData(); // Akan memuat data lalu otomatis memanggil fungsi render yang sesuai
-            } else {
-                renderMenuKasir();
-            }
+            if (typeof muatData === 'function') muatData();
+            else renderMenuKasir();
         };
 
         function updateTime() {
@@ -220,7 +216,7 @@
         updateTime();
 
         function tambahKeStruk(id, nama, harga) {
-            const itemAda = keranjang.find(item => item.id === id);
+            const itemAda = keranjang.find(item => item.id == id);
             if (itemAda) {
                 itemAda.qty++;
             } else {
@@ -283,7 +279,6 @@
         async function cetakStruk() {
             const tunai = document.getElementById('input-tunai').value;
             
-            // 1. Validasi
             if (keranjang.length === 0) {
                 alert("Pilih barang dulu!");
                 return;
@@ -298,26 +293,27 @@
             btn.disabled = true;
 
             try {
-                // 2. Proses Kurangi Stok langsung ke Database (Google Sheets)
                 for (let itemBeli of keranjang) {
-                    let barangDiSistem = daftarProduk.find(p => p.id === itemBeli.id);
+                    let barangDiSistem = daftarProduk.find(p => p.id == itemBeli.id);
                     if (barangDiSistem) {
                         let stokSisa = barangDiSistem.stok - itemBeli.qty;
-                        if (stokSisa < 0) stokSisa = 0; // Jaga-jaga agar tidak minus
+                        if (stokSisa < 0) stokSisa = 0; 
                         
-                        // Kirim update ke cloud menggunakan fungsi di produk.js
-                        await kirimKeCloud({ action: 'update', id: itemBeli.id, stok: stokSisa });
+                        // Kirim request update langsung tanpa refresh halaman agar tidak lag
+                        await fetch(SCRIPT_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({ action: 'update', id: itemBeli.id, stok: stokSisa })
+                        });
                     }
                 }
 
-                // Kembalikan tombol ke semula
+                // Baru muat ulang datanya di background setelah semua selesai dipotong
+                if (typeof muatData === 'function') await muatData();
+
                 btn.innerHTML = '<i class="fa-solid fa-print"></i> CETAK STRUK';
                 btn.disabled = false;
-
-                // 3. Buka jendela Print
                 window.print();
 
-                // 4. Otomatis reset keranjang setelah nge-print
                 setTimeout(() => {
                     keranjang = [];
                     document.getElementById('input-tunai').value = '';
