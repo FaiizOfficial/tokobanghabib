@@ -158,7 +158,7 @@
     <script src="produk.js"></script>
 
     <script>
-        let idPilihan = null;
+       let idPilihan = null;
 
         function renderTabel(data = daftarProduk) {
             const tbody = document.getElementById('tabel-stok-body');
@@ -183,8 +183,8 @@
                         <td class="status-badge">${statusBadge}</td>
                         <td>
                             <div class="action-btns">
-                                <button class="btn-icon btn-edit" onclick="bukaModalEdit(${item.id})" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
-                                <button class="btn-icon btn-delete" onclick="bukaModalHapus(${item.id})" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn-icon btn-edit" onclick="bukaModalEdit('${item.id}')" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="bukaModalHapus('${item.id}')" title="Hapus"><i class="fa-solid fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -192,13 +192,9 @@
             });
         }
 
-        // Memuat data dari produk.js saat halaman dibuka
         window.onload = () => {
-            if (typeof muatData === 'function') {
-                muatData();
-            } else {
-                renderTabel();
-            }
+            if (typeof muatData === 'function') muatData();
+            else renderTabel();
         };
 
         function tutupModal(idModal) {
@@ -208,11 +204,13 @@
 
         function bukaModalEdit(id) {
             idPilihan = id;
-            let item = daftarProduk.find(p => p.id === id);
+            let item = daftarProduk.find(p => p.id == id);
             if(item) {
                 document.getElementById('namaBarangEdit').innerText = item.nama;
                 document.getElementById('inputStokBaru').value = item.stok;
                 document.getElementById('modalEdit').style.display = 'flex';
+            } else {
+                alert("Gagal: Barang ini tidak memiliki ID sistem. Silakan hapus manual di Google Sheets lalu input ulang lewat web.");
             }
         }
 
@@ -221,9 +219,7 @@
             if (stokBaru !== "" && idPilihan !== null) {
                 let btn = document.getElementById('btnSimpanEdit');
                 btn.innerText = "Menyimpan...";
-                
                 await kirimKeCloud({ action: 'update', id: idPilihan, stok: parseInt(stokBaru) });
-                
                 btn.innerText = "Simpan ke Database";
                 tutupModal('modalEdit');
             }
@@ -231,10 +227,12 @@
 
         function bukaModalHapus(id) {
             idPilihan = id;
-            let item = daftarProduk.find(p => p.id === id);
+            let item = daftarProduk.find(p => p.id == id);
             if(item) {
                 document.getElementById('namaBarangHapus').innerText = item.nama;
                 document.getElementById('modalHapus').style.display = 'flex';
+            } else {
+                alert("Gagal: Barang ini tidak memiliki ID sistem. Silakan hapus manual di Google Sheets lalu input ulang lewat web.");
             }
         }
 
@@ -242,9 +240,7 @@
             if (idPilihan !== null) {
                 let btn = document.getElementById('btnSimpanHapus');
                 btn.innerText = "Menghapus...";
-                
                 await kirimKeCloud({ action: 'hapus', id: idPilihan });
-                
                 btn.innerText = "Ya, Hapus";
                 tutupModal('modalHapus');
             }
@@ -267,15 +263,7 @@
             if (nama && harga && stok) {
                 let btn = document.getElementById('btnSimpanTambah');
                 btn.innerText = "Menyimpan...";
-                
-                await kirimKeCloud({ 
-                    action: 'tambah', 
-                    nama: nama, 
-                    kategori: kategori, 
-                    harga: parseInt(harga), 
-                    stok: parseInt(stok) 
-                });
-                
+                await kirimKeCloud({ action: 'tambah', nama: nama, kategori: kategori, harga: parseInt(harga), stok: parseInt(stok) });
                 btn.innerText = "Simpan ke Database";
                 tutupModal('modalTambah');
             } else {
