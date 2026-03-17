@@ -17,25 +17,29 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: var(--bg-light); }
+        body { background-color: var(--bg-light); overflow-x: hidden; }
 
         header {
             background-color: var(--primary-blue);
             color: var(--white);
-            padding: 1rem 2rem;
+            padding: 1rem 1.5rem;
             display: flex;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
         }
 
-        .back-btn { color: var(--white); font-size: 1.5rem; text-decoration: none; margin-right: 20px; }
+        .back-btn { color: var(--white); font-size: 1.3rem; text-decoration: none; margin-right: 15px; transition: color 0.3s;}
+        .back-btn:hover { color: #DBEAFE; }
+        .header-title { font-size: 1.1rem; font-weight: 600; }
 
         .container {
             max-width: 1000px;
             margin: 20px auto;
             padding: 20px;
+            width: 100%;
         }
 
         .card {
@@ -57,14 +61,15 @@
         }
 
         .table-wrapper {
-            overflow-x: auto;
+            width: 100%;
+            overflow-x: hidden; /* Mencegah scroll nganggu */
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
-            min-width: 600px;
+            table-layout: auto;
         }
 
         th {
@@ -88,7 +93,9 @@
             border-radius: 6px;
             text-align: center;
             font-weight: bold;
+            outline: none;
         }
+        .input-stok:focus { border-color: var(--accent-blue); }
 
         .selisih {
             font-weight: 600;
@@ -107,6 +114,7 @@
             cursor: pointer;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             margin-top: 20px;
             float: right;
@@ -121,12 +129,35 @@
             padding: 10px;
             border: 1px solid #D1D5DB;
             border-radius: 8px;
+            outline: none;
         }
+        .search-box:focus { border-color: var(--accent-blue); }
 
-        @media (max-width: 600px) {
-            .header-opname { flex-direction: column; align-items: flex-start; }
-            th, td { font-size: 0.85rem; padding: 10px; }
-            .input-stok { width: 60px; }
+        /* KHUSUS HP BIAR FIT 100% TANPA SWIPE */
+        @media (max-width: 768px) {
+            .container { padding: 10px; margin: 10px auto; }
+            .card { padding: 12px; }
+            .header-opname { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px; }
+            .search-box { max-width: 100%; font-size: 0.9rem; padding: 8px;}
+            
+            table { font-size: 11px; }
+            th, td { 
+                padding: 8px 4px; 
+                word-wrap: break-word; 
+                white-space: normal;
+            }
+
+            /* Atur lebar kolom persentase biar pas */
+            th:nth-child(1), td:nth-child(1) { width: 45%; font-weight: 600; line-height: 1.2; } /* Nama */
+            th:nth-child(2), td:nth-child(2) { width: 20%; text-align: center; } /* Stok Sistem */
+            th:nth-child(3), td:nth-child(3) { width: 20%; text-align: center; } /* Input Fisik */
+            th:nth-child(4), td:nth-child(4) { width: 15%; text-align: center; } /* Selisih */
+
+            /* Kecilin input box biar ga makan tempat */
+            .input-stok { width: 50px; padding: 6px 2px; font-size: 11px; }
+            
+            /* Tombol simpan dibikin full kiri ke kanan di HP */
+            .btn-simpan { float: none; width: 100%; font-size: 0.95rem; padding: 12px; }
         }
     </style>
 </head>
@@ -134,14 +165,14 @@
 
     <header>
         <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
-        <div class="header-title">Fitra Frozen Food - Stok Opname</div>
+        <div class="header-title">Stok Opname</div>
     </header>
 
     <div class="container">
         <div class="card">
             <div class="header-opname">
                 <div>
-                    <h2>Input Hasil Opname</h2>
+                    <h2 style="font-size: 1.2rem; color: var(--primary-blue);">Input Hasil Opname</h2>
                     <p style="font-size: 0.8rem; color: #666;" id="info-tgl"></p>
                 </div>
                 <input type="text" class="search-box" id="inputPencarianOpname" placeholder="Cari barang..." oninput="cariBarangOpname()">
@@ -152,13 +183,13 @@
                     <thead>
                         <tr>
                             <th>Nama Barang</th>
-                            <th>Stok Sistem</th>
-                            <th>Stok Fisik</th>
-                            <th>Selisih</th>
+                            <th style="text-align: center;">Sistem</th>
+                            <th style="text-align: center;">Fisik</th>
+                            <th style="text-align: center;">Selisih</th>
                         </tr>
                     </thead>
                     <tbody id="tabel-stok">
-                        <tr><td colspan="4" style="text-align:center;">Memuat data dari database...</td></tr>
+                        <tr><td colspan="4" style="text-align:center; padding: 20px; color: #9ca3af;">Memuat data dari database...</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -192,25 +223,27 @@
                     else if (selisih > 0) classWarna = "positif";
                 }
 
+                // Pengaman nama barang
+                let namaTampil = item.nama || item['nama barang'] || '-';
+
                 tbody.innerHTML += `
                     <tr>
-                        <td><strong>${item.nama}</strong></td>
-                        <td id="sistem-${item.id}">${item.stok}</td>
-                        <td>
+                        <td>${namaTampil}</td>
+                        <td id="sistem-${item.id}" style="text-align: center;">${item.stok}</td>
+                        <td style="text-align: center;">
                             <input type="number" class="input-stok" placeholder="0" value="${nilaiFisik}" 
-                                oninput="hitungSelisih(${item.id}, this.value)">
+                                oninput="hitungSelisih('${item.id}', this.value)">
                         </td>
-                        <td id="selisih-${item.id}" class="selisih ${classWarna}">${teksSelisih}</td>
+                        <td id="selisih-${item.id}" class="selisih ${classWarna}" style="text-align: center;">${teksSelisih}</td>
                     </tr>
                 `;
             });
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#999;">Barang tidak ditemukan atau database kosong</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 20px; color:#9ca3af;">Barang tidak ditemukan</td></tr>`;
             }
         }
 
-        // Panggil muatData() dari produk.js saat halaman dibuka
         window.onload = () => {
             if (typeof muatData === 'function') {
                 muatData();
@@ -221,12 +254,17 @@
 
         function cariBarangOpname() {
             let keyword = document.getElementById('inputPencarianOpname').value.toLowerCase();
-            let hasilCari = daftarProduk.filter(item => item.nama.toLowerCase().includes(keyword));
+            let hasilCari = daftarProduk.filter(item => {
+                let namaItem = item.nama || item['nama barang'] || "";
+                return namaItem.toLowerCase().includes(keyword);
+            });
             renderTabelOpname(hasilCari);
         }
 
         function hitungSelisih(idItem, nilaiFisik) {
-            const itemTarget = daftarProduk.find(item => item.id === idItem);
+            const itemTarget = daftarProduk.find(item => item.id == idItem);
+            if (!itemTarget) return;
+
             dataInputFisik[idItem] = nilaiFisik === "" ? "" : parseInt(nilaiFisik);
 
             const stokSistem = itemTarget.stok;
@@ -234,7 +272,7 @@
             const selisih = fisik - stokSistem;
             
             const elemenSelisih = document.getElementById(`selisih-${idItem}`);
-            elemenSelisih.innerText = selisih;
+            elemenSelisih.innerText = selisih > 0 ? `+${selisih}` : selisih; // Kasih tanda + kalo lebih
 
             elemenSelisih.classList.remove('negatif', 'positif');
             if (selisih < 0) {
@@ -245,7 +283,6 @@
         }
 
         async function simpanOpname() {
-            // Cek apakah ada data yang diubah
             let adaPerubahan = false;
             for (let id in dataInputFisik) {
                 if (dataInputFisik[id] !== "") adaPerubahan = true;
@@ -262,14 +299,17 @@
                 btn.style.opacity = '0.7';
                 btn.disabled = true;
 
-                // Proses update stok satu per satu ke database
                 try {
+                    // Pakai Promise.all biar simpannya jalan barengan dan lebih cepet
+                    let prosesSimpan = [];
                     for (let id in dataInputFisik) {
                         if (dataInputFisik[id] !== "") {
-                            // Menggunakan fungsi kirimKeCloud dari produk.js
-                            await kirimKeCloud({ action: 'opname', id: id, stok: parseInt(dataInputFisik[id]) });
+                            prosesSimpan.push(kirimKeCloud({ action: 'opname', id: id, stok: parseInt(dataInputFisik[id]) }));
                         }
                     }
+                    
+                    await Promise.all(prosesSimpan);
+
                     alert("Stok di database berhasil diperbarui!");
                     window.location.href = 'index.html'; 
                 } catch (e) {
