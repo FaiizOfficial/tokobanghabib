@@ -158,11 +158,12 @@
                         </tr>
                     </thead>
                     <tbody id="tabel-stok">
-                        </tbody>
+                        <tr><td colspan="4" style="text-align:center;">Memuat data dari database...</td></tr>
+                    </tbody>
                 </table>
             </div>
 
-            <button class="btn-simpan" onclick="simpanOpname()">
+            <button class="btn-simpan" id="btnSimpanOpname" onclick="simpanOpname()">
                 <i class="fa-solid fa-floppy-disk"></i> SIMPAN PERUBAHAN
             </button>
             <div style="clear: both;"></div>
@@ -170,8 +171,6 @@
     </div>
 
     <script src="produk.js"></script>
-
-   <script src="produk.js"></script>
 
     <script>
         let dataInputFisik = {}; 
@@ -207,9 +206,18 @@
             });
 
             if (data.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#999;">Barang tidak ditemukan</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:#999;">Barang tidak ditemukan atau database kosong</td></tr>`;
             }
         }
+
+        // Panggil muatData() dari produk.js saat halaman dibuka
+        window.onload = () => {
+            if (typeof muatData === 'function') {
+                muatData();
+            } else {
+                renderTabelOpname();
+            }
+        };
 
         function cariBarangOpname() {
             let keyword = document.getElementById('inputPencarianOpname').value.toLowerCase();
@@ -236,29 +244,45 @@
             }
         }
 
-        function simpanOpname() {
-            if(confirm("Yakin data fisik udah benar? Stok sistem bakal ngikutin data fisik ini.")) {
-                // Proses update stok di data utama
-                for (let id in dataInputFisik) {
-                    if (dataInputFisik[id] !== "") {
-                        let itemIndex = daftarProduk.findIndex(p => p.id === parseInt(id));
-                        if (itemIndex !== -1) {
-                            daftarProduk[itemIndex].stok = parseInt(dataInputFisik[id]);
+        async function simpanOpname() {
+            // Cek apakah ada data yang diubah
+            let adaPerubahan = false;
+            for (let id in dataInputFisik) {
+                if (dataInputFisik[id] !== "") adaPerubahan = true;
+            }
+
+            if (!adaPerubahan) {
+                alert("Belum ada stok fisik yang diinput!");
+                return;
+            }
+
+            if(confirm("Yakin data fisik udah benar? Stok di database akan mengikuti data fisik ini.")) {
+                let btn = document.getElementById('btnSimpanOpname');
+                btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> MENYIMPAN...';
+                btn.style.opacity = '0.7';
+                btn.disabled = true;
+
+                // Proses update stok satu per satu ke database
+                try {
+                    for (let id in dataInputFisik) {
+                        if (dataInputFisik[id] !== "") {
+                            // Menggunakan fungsi kirimKeCloud dari produk.js
+                            await kirimKeCloud({ action: 'opname', id: id, stok: parseInt(dataInputFisik[id]) });
                         }
                     }
+                    alert("Stok di database berhasil diperbarui!");
+                    window.location.href = 'index.html'; 
+                } catch (e) {
+                    alert("Terjadi kesalahan saat menyimpan. Coba lagi.");
+                    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> SIMPAN PERUBAHAN';
+                    btn.style.opacity = '1';
+                    btn.disabled = false;
                 }
-                simpanData(); // Bikin data permanen di browser
-                alert("Stok berhasil diperbarui!");
-                window.location.href = 'index.html'; 
             }
         }
 
         const tgl = new Date();
         document.getElementById('info-tgl').innerText = "Tanggal Opname: " + tgl.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-
-        window.onload = () => {
-            renderTabelOpname();
-        };
     </script>
 </body>
 </html>
