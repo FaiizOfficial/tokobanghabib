@@ -1,5 +1,5 @@
 // Link Google Apps Script sebagai jembatan ke Google Sheets
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwk7BlYuCi7MK_uLHX4EGpqBH4-tXPJtUk_9b4yebjGNdgsx5I0pPh2P92utLgyKLlZ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwmuB0evpumWvtXlvpZV1HmmNHsjGH6Bmm9VeDivEaAaB-Ha1b_8e6ErwkNYiC4yqQZ/exec";
 
 let daftarProduk = [];
 
