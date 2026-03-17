@@ -20,62 +20,78 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #F3F4F6; color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; }
+        body { background-color: #F3F4F6; color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
         /* Header */
-        header { background-color: var(--primary-blue); color: var(--white); padding: 1rem 2rem; display: flex; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 100; }
-        .back-btn { color: var(--white); font-size: 1.5rem; text-decoration: none; margin-right: 20px; transition: color 0.3s; }
+        header { background-color: var(--primary-blue); color: var(--white); padding: 1rem 1.5rem; display: flex; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); position: sticky; top: 0; z-index: 100; }
+        .back-btn { color: var(--white); font-size: 1.3rem; text-decoration: none; margin-right: 15px; transition: color 0.3s; }
         .back-btn:hover { color: var(--ice-blue); }
-        .header-title { font-size: 1.2rem; font-weight: 600; }
+        .header-title { font-size: 1.1rem; font-weight: 600; }
 
         /* Main Content */
-        main { flex: 1; padding: 2rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+        main { flex: 1; padding: 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; }
 
         /* Top Actions */
-        .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem; }
+        .top-actions { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
         .search-box { display: flex; align-items: center; background: var(--white); padding: 0.5rem 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); width: 100%; max-width: 400px; border: 1px solid #E5E7EB; }
         .search-box input { border: none; outline: none; padding: 0.5rem; width: 100%; font-size: 0.95rem; }
         .search-box i { color: #9CA3AF; }
 
-        .btn-add { background-color: var(--accent-blue); color: var(--white); padding: 0.8rem 1.5rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
+        .btn-add { background-color: var(--accent-blue); color: var(--white); padding: 0.7rem 1.2rem; border: none; border-radius: 8px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 8px; transition: background 0.3s; }
         .btn-add:hover { background-color: #2563EB; }
 
         /* Table Area */
-        .table-container { background: var(--white); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        .table-container { background: var(--white); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); overflow-x: auto; width: 100%; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
         thead { background-color: var(--ice-blue); color: var(--primary-blue); }
-        th, td { padding: 1rem 1.5rem; border-bottom: 1px solid #E5E7EB; }
-        th { font-weight: 600; }
+        th, td { padding: 0.8rem 1rem; border-bottom: 1px solid #E5E7EB; font-size: 0.95rem; }
+        th { font-weight: 600; white-space: nowrap; }
         tbody tr:hover { background-color: #F9FAFB; }
 
-        .badge { padding: 0.4rem 0.8rem; border-radius: 50px; font-size: 0.85rem; font-weight: 500; display: inline-block; }
+        .badge { padding: 0.3rem 0.6rem; border-radius: 50px; font-size: 0.8rem; font-weight: 500; display: inline-block; white-space: nowrap; }
         .badge-aman { background-color: #D1FAE5; color: var(--success); }
         .badge-menipis { background-color: #FEF3C7; color: var(--warning); }
         .badge-habis { background-color: #FEE2E2; color: var(--danger); }
 
-        .action-btns { display: flex; gap: 15px; }
-        .btn-icon { background: none; border: none; cursor: pointer; font-size: 1.2rem; transition: transform 0.2s; }
+        .action-btns { display: flex; gap: 10px; flex-wrap: nowrap; }
+        .btn-icon { background: none; border: none; cursor: pointer; font-size: 1.1rem; transition: transform 0.2s; padding: 5px; }
         .btn-edit { color: var(--accent-blue); }
         .btn-delete { color: var(--danger); }
         .btn-icon:hover { transform: scale(1.2); }
 
         /* MODAL */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); z-index: 999; justify-content: center; align-items: center; }
-        .modal-box { background: var(--white); padding: 2rem; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); animation: muncul 0.3s ease-out; }
+        .modal-box { background: var(--white); padding: 1.5rem; border-radius: 12px; width: 90%; max-width: 400px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); animation: muncul 0.3s ease-out; }
         @keyframes muncul { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal-title { font-size: 1.3rem; color: var(--primary-blue); margin-bottom: 1.5rem; font-weight: 600; }
+        .modal-title { font-size: 1.2rem; color: var(--primary-blue); margin-bottom: 1rem; font-weight: 600; }
         
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #4B5563; }
-        .form-group input { width: 100%; padding: 0.6rem 1rem; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 1rem; outline: none; }
+        .form-group { margin-bottom: 0.8rem; }
+        .form-group label { display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: #4B5563; }
+        .form-group input { width: 100%; padding: 0.5rem 0.8rem; border: 1px solid #D1D5DB; border-radius: 6px; font-size: 0.95rem; outline: none; }
         .form-group input:focus { border-color: var(--accent-blue); }
 
-        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem; }
-        .btn-batal { background: #F3F4F6; color: #4B5563; padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; }
-        .btn-simpan { background: var(--accent-blue); color: var(--white); padding: 0.6rem 1.2rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.2rem; }
+        .btn-batal { background: #F3F4F6; color: #4B5563; padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem;}
+        .btn-simpan { background: var(--accent-blue); color: var(--white); padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem;}
         .btn-bahaya { background: var(--danger); }
 
-        @media (max-width: 768px) { .top-actions { flex-direction: column; align-items: flex-start; } .search-box { max-width: 100%; } .btn-add { width: 100%; justify-content: center; } }
+        /* SETTING KHUSUS LAYAR HP BIAR PAS */
+        @media (max-width: 768px) { 
+            main { padding: 1rem; }
+            .top-actions { flex-direction: column; align-items: flex-stretch; gap: 0.8rem;} 
+            .search-box { max-width: 100%; } 
+            .btn-add { width: 100%; justify-content: center; font-size: 0.9rem;} 
+            
+            /* Penyesuaian ukuran tabel */
+            th, td { padding: 0.6rem 0.3rem; font-size: 0.75rem; word-break: break-word;}
+            
+            /* Sembunyikan kolom kategori di HP biar hemat tempat */
+            .hide-on-mobile { display: none; }
+            
+            .badge { padding: 0.2rem 0.4rem; font-size: 0.7rem; }
+            .btn-icon { font-size: 1rem; padding: 2px; }
+            .action-btns { gap: 5px; }
+        }
     </style>
 </head>
 <body>
@@ -101,9 +117,9 @@
                 <thead>
                     <tr>
                         <th>Nama Barang</th>
-                        <th>Kategori</th>
-                        <th>Harga Jual</th>
-                        <th>Sisa Stok</th>
+                        <th class="hide-on-mobile">Kategori</th> 
+                        <th>Harga</th>
+                        <th>Stok</th>
                         <th>Status</th>
                         <th>Aksi</th>
                     </tr>
@@ -117,14 +133,14 @@
     <div class="modal-overlay" id="modalEdit">
         <div class="modal-box">
             <h3 class="modal-title">Edit Sisa Stok</h3>
-            <p id="namaBarangEdit" style="margin-bottom: 10px; font-weight: 500;"></p>
+            <p id="namaBarangEdit" style="margin-bottom: 10px; font-weight: 500; font-size: 0.9rem; color: var(--primary-blue);"></p>
             <div class="form-group">
                 <label>Jumlah Stok Baru</label>
                 <input type="number" id="inputStokBaru" min="0">
             </div>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalEdit')">Batal</button>
-                <button class="btn-simpan" id="btnSimpanEdit" onclick="simpanEditStok()">Simpan ke Database</button>
+                <button class="btn-simpan" id="btnSimpanEdit" onclick="simpanEditStok()">Simpan</button>
             </div>
         </div>
     </div>
@@ -132,7 +148,7 @@
     <div class="modal-overlay" id="modalHapus">
         <div class="modal-box">
             <h3 class="modal-title" style="color: var(--danger);">Hapus Barang?</h3>
-            <p>Yakin mau ngehapus <strong id="namaBarangHapus"></strong> dari database?</p>
+            <p style="font-size: 0.9rem;">Yakin mau ngehapus <strong id="namaBarangHapus"></strong>?</p>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalHapus')">Batal</button>
                 <button class="btn-simpan btn-bahaya" id="btnSimpanHapus" onclick="konfirmasiHapus()">Ya, Hapus</button>
@@ -143,14 +159,13 @@
     <div class="modal-overlay" id="modalTambah">
         <div class="modal-box">
             <h3 class="modal-title">Tambah Barang Baru</h3>
-            <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Data akan langsung tersimpan permanen ke Google Sheets.</p>
             <div class="form-group"><label>Nama Barang</label><input type="text" id="inputNamaBarang"></div>
             <div class="form-group"><label>Kategori</label><input type="text" id="inputKategori"></div>
             <div class="form-group"><label>Harga Jual (Rp)</label><input type="number" id="inputHarga"></div>
             <div class="form-group"><label>Stok Awal</label><input type="number" id="inputStokAwal"></div>
             <div class="modal-actions">
                 <button class="btn-batal" onclick="tutupModal('modalTambah')">Batal</button>
-                <button class="btn-simpan" id="btnSimpanTambah" onclick="simpanBarangBaru()">Simpan ke Database</button>
+                <button class="btn-simpan" id="btnSimpanTambah" onclick="simpanBarangBaru()">Simpan</button>
             </div>
         </div>
     </div>
@@ -176,11 +191,11 @@
 
                 tbody.innerHTML += `
                     <tr>
-                        <td>${item.nama}</td>
-                        <td>${item.kategori || '-'}</td>
+                        <td><strong>${item.nama}</strong></td>
+                        <td class="hide-on-mobile">${item.kategori || '-'}</td>
                         <td>Rp ${item.harga.toLocaleString('id-ID')}</td>
-                        <td class="stok-angka">${item.stok}</td>
-                        <td class="status-badge">${statusBadge}</td>
+                        <td class="stok-angka" style="font-weight: bold; text-align: center;">${item.stok}</td>
+                        <td>${statusBadge}</td>
                         <td>
                             <div class="action-btns">
                                 <button class="btn-icon btn-edit" onclick="bukaModalEdit('${item.id}')" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -190,6 +205,10 @@
                     </tr>
                 `;
             });
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: #9ca3af;">Barang tidak ditemukan</td></tr>`;
+            }
         }
 
         window.onload = () => {
@@ -219,8 +238,10 @@
             if (stokBaru !== "" && idPilihan !== null) {
                 let btn = document.getElementById('btnSimpanEdit');
                 btn.innerText = "Menyimpan...";
+                btn.disabled = true;
                 await kirimKeCloud({ action: 'update', id: idPilihan, stok: parseInt(stokBaru) });
-                btn.innerText = "Simpan ke Database";
+                btn.innerText = "Simpan";
+                btn.disabled = false;
                 tutupModal('modalEdit');
             }
         }
@@ -240,8 +261,10 @@
             if (idPilihan !== null) {
                 let btn = document.getElementById('btnSimpanHapus');
                 btn.innerText = "Menghapus...";
+                btn.disabled = true;
                 await kirimKeCloud({ action: 'hapus', id: idPilihan });
                 btn.innerText = "Ya, Hapus";
+                btn.disabled = false;
                 tutupModal('modalHapus');
             }
         }
@@ -263,8 +286,10 @@
             if (nama && harga && stok) {
                 let btn = document.getElementById('btnSimpanTambah');
                 btn.innerText = "Menyimpan...";
+                btn.disabled = true;
                 await kirimKeCloud({ action: 'tambah', nama: nama, kategori: kategori, harga: parseInt(harga), stok: parseInt(stok) });
-                btn.innerText = "Simpan ke Database";
+                btn.innerText = "Simpan";
+                btn.disabled = false;
                 tutupModal('modalTambah');
             } else {
                 alert("Harap isi nama, harga, dan stok!");
