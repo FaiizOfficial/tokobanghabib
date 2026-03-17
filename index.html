@@ -3,170 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fitra Froozen Food - Manajemen Toko</title>
+    <title>Fitra Frozen Food - Manajemen Toko</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            --primary-blue: #1E3A8A; /* Navy Blue */
-            --ice-blue: #DBEAFE; /* Light Blue */
-            --accent-blue: #3B82F6; /* Bright Blue */
+            --primary-blue: #1E3A8A; 
+            --ice-blue: #DBEAFE; 
+            --accent-blue: #3B82F6; 
             --text-dark: #1F2937;
             --white: #FFFFFF;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
-
-        body {
-            background-color: #F3F4F6;
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: #F3F4F6; color: var(--text-dark); min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; } /* overflow: hidden biar ga bisa di-scroll sama sekali */
 
         /* Header / Navbar */
-        header {
-            background-color: var(--primary-blue);
-            color: var(--white);
-            padding: 1.5rem 2rem;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .logo-area {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .logo-icon {
-            font-size: 2rem;
-            color: var(--ice-blue);
-        }
-
-        .logo-text h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
-
-        .logo-text p {
-            font-size: 0.8rem;
-            color: var(--ice-blue);
-            opacity: 0.9;
-        }
+        header { background-color: var(--primary-blue); color: var(--white); padding: 1.5rem 2rem; display: flex; align-items: center; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-icon { font-size: 2rem; color: var(--ice-blue); }
+        .logo-text h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; }
+        .logo-text p { font-size: 0.8rem; color: var(--ice-blue); opacity: 0.9; }
 
         /* Main Content */
-        main {
-            flex: 1;
-            padding: 3rem 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
+        main { flex: 1; padding: 2rem; max-width: 1000px; margin: 0 auto; width: 100%; display: flex; align-items: center; justify-content: center;}
 
-        .welcome-section {
-            text-align: center;
-            margin-bottom: 3rem;
+        /* 3 Kotak Menu Sejajar */
+        .menu-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; width: 100%; }
+        .menu-card { 
+            background-color: var(--white); border-radius: 12px; padding: 3rem 1rem; text-align: center; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); text-decoration: none; color: var(--text-dark); border: 2px solid transparent; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-
-        .welcome-section h2 {
-            font-size: 2.2rem;
-            color: var(--primary-blue);
-            margin-bottom: 10px;
-        }
-
-        .welcome-section p {
-            color: #6B7280;
-            font-size: 1.1rem;
-        }
-
-        /* Grid Pilihan Menu */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 1rem;
-        }
-
-        .menu-card {
-            background-color: var(--white);
-            border-radius: 15px;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-            border-top: 5px solid var(--accent-blue);
-            text-decoration: none;
-            color: var(--text-dark);
-        }
-
-        .menu-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            background-color: var(--ice-blue);
-        }
-
-        .menu-icon {
-            font-size: 3.5rem;
-            color: var(--accent-blue);
-            margin-bottom: 1.5rem;
-        }
-
-        .menu-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        .menu-card p {
-            font-size: 0.95rem;
-            color: #6B7280;
-        }
+        .menu-card:hover { transform: translateY(-5px); border-color: var(--accent-blue); background-color: #F8FAFC; }
+        .menu-icon { font-size: 3.5rem; color: var(--accent-blue); margin-bottom: 15px; }
+        .menu-card h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.2; }
 
         /* Footer */
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            background-color: var(--white);
-            color: #9CA3AF;
-            font-size: 0.9rem;
-            margin-top: auto;
-        }
+        footer { text-align: center; padding: 1.5rem; background-color: transparent; color: #9CA3AF; font-size: 0.9rem; margin-top: auto; }
 
         /* Responsiveness untuk HP */
         @media (max-width: 768px) {
-            header {
-                padding: 1rem;
-                justify-content: center;
-            }
-            .logo-area {
-                gap: 10px;
-            }
-            .logo-icon {
-                font-size: 1.8rem;
-            }
-            .logo-text h1 {
-                font-size: 1.2rem;
-            }
-            .logo-text p {
-                font-size: 0.75rem;
-            }
-            .welcome-section h2 {
-                font-size: 1.8rem;
-            }
-            main {
-                padding: 2rem 1rem;
-            }
+            header { padding: 1.2rem; justify-content: center; }
+            .logo-icon { font-size: 1.8rem; }
+            .logo-text h1 { font-size: 1.3rem; }
+            
+            main { padding: 1.5rem 1rem; }
+            
+            /* Tetap 3 baris tapi dirapatkan dan tingginya disesuaikan */
+            .menu-row { gap: 12px; }
+            .menu-card { padding: 2.5rem 0.5rem; }
+            .menu-icon { font-size: 2.5rem; margin-bottom: 10px; }
+            .menu-card h3 { font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -176,41 +64,33 @@
         <div class="logo-area">
             <i class="fa-solid fa-snowflake logo-icon"></i>
             <div class="logo-text">
-                <h1>FITRA FROOZEN FOOD</h1>
+                <h1>FITRA FROZEN FOOD</h1>
                 <p>Sistem Manajemen Toko</p>
             </div>
         </div>
     </header>
 
     <main>
-        <div class="welcome-section">
-            <h2>Selamat Datang, Admin!</h2>
-            <p>Pilih menu di bawah ini untuk mengelola operasional toko hari ini.</p>
-        </div>
-
-        <div class="menu-grid">
+        <div class="menu-row">
             <a href="struk.html" class="menu-card">
                 <i class="fa-solid fa-receipt menu-icon"></i>
                 <h3>Cetak Struk</h3>
-                <p>Proses transaksi kasir dan cetak bukti pembayaran pelanggan.</p>
             </a>
 
-            <a href="cek-stok.html" class="menu-card">
+            <a href="cek_stok.html" class="menu-card">
                 <i class="fa-solid fa-boxes-stacked menu-icon"></i>
-                <h3>Cek Stok Barang</h3>
-                <p>Pantau ketersediaan produk frozen food secara real-time.</p>
+                <h3>Cek Stok</h3>
             </a>
 
-            <a href="so.html" class="menu-card">
+            <a href="stok_opname.html" class="menu-card">
                 <i class="fa-solid fa-clipboard-check menu-icon"></i>
                 <h3>Stok Opname</h3>
-                <p>Lakukan penyesuaian dan pencatatan fisik stok barang di gudang/freezer.</p>
             </a>
         </div>
     </main>
 
     <footer>
-        <p>&copy; 2026 Fitra Froozen Food. All rights reserved.</p>
+        <p>&copy; 2026 Fitra Frozen Food. All rights reserved.</p>
     </footer>
 
 </body>
