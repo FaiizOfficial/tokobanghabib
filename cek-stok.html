@@ -44,7 +44,7 @@
         .table-container { background: var(--white); border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); width: 100%; overflow: hidden; }
         table { width: 100%; border-collapse: collapse; text-align: left; table-layout: auto; }
         thead { background-color: var(--ice-blue); color: var(--primary-blue); }
-        th, td { padding: 0.8rem 1rem; border-bottom: 1px solid #E5E7EB; font-size: 0.95rem; }
+        th, td { padding: 1rem; border-bottom: 1px solid #E5E7EB; font-size: 0.95rem; }
         th { font-weight: 600; white-space: nowrap; }
         tbody tr:hover { background-color: #F9FAFB; }
 
@@ -75,36 +75,38 @@
         .btn-simpan { background: var(--accent-blue); color: var(--white); padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 0.9rem;}
         .btn-bahaya { background: var(--danger); }
 
-        /* KHUSUS HP: MENGECILKAN SEMUA ELEMEN BIAR MUAT 5 KOLOM */
+        /* KHUSUS HP: MENGECILKAN SEMUA ELEMEN SESUAI SKETSA */
         @media (max-width: 768px) { 
-            main { padding: 0.8rem 0.4rem; }
-            .top-actions { flex-direction: column; align-items: stretch; gap: 0.6rem; margin-bottom: 1rem; } 
+            main { padding: 10px; }
+            .top-actions { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 15px; } 
             .search-box { max-width: 100%; } 
-            .btn-add { width: 100%; justify-content: center; font-size: 0.85rem; padding: 0.6rem;} 
+            .btn-add { width: 100%; justify-content: center; font-size: 14px; padding: 10px;} 
             
-            /* Sembunyikan Kategori saja */
+            /* Sembunyikan Kategori */
             .hide-on-mobile { display: none !important; }
             
-            /* Atur ulang ukuran tabel agar ultra-kompak */
-            table { font-size: 0.65rem; }
+            /* Atur ukuran tabel jadi mini */
+            table { width: 100%; font-size: 11px; }
             th, td { 
-                padding: 0.4rem 0.2rem; /* Jarak dibuat sangat mepet */
+                padding: 8px 4px; /* Jarak dikecilin banget */
                 word-wrap: break-word; 
                 white-space: normal;
+                vertical-align: middle;
             }
             
-            /* Kolom Nama Barang dibuat bisa turun ke baris baru kalau panjang */
-            th:nth-child(1), td:nth-child(1) { min-width: 70px; max-width: 100px; line-height: 1.2;}
+            /* Porsi lebar kolom biar muat 5 kolom (100%) */
+            th:nth-child(1), td:nth-child(1) { width: 30%; font-weight: 600; line-height: 1.2; } /* Nama */
+            th:nth-child(3), td:nth-child(3) { width: 25%; } /* Harga */
+            th:nth-child(4), td:nth-child(4) { width: 10%; text-align: center; font-weight: bold; } /* Stok */
+            th:nth-child(5), td:nth-child(5) { width: 15%; text-align: center; } /* Status */
+            th:nth-child(6), td:nth-child(6) { width: 20%; text-align: center; } /* Aksi */
             
-            /* Harga dibuat pas satu baris */
-            .harga-hp { white-space: nowrap; font-size: 0.65rem; letter-spacing: -0.3px; }
+            .stok-angka { font-size: 12px; }
+            .badge { padding: 3px 5px; font-size: 9px; border-radius: 4px; }
             
-            .stok-angka { font-size: 0.8rem; }
-            .badge { padding: 0.15rem 0.3rem; font-size: 0.6rem; border-radius: 4px; }
-            
-            /* Tombol aksi didekatkan */
-            .btn-icon { font-size: 0.9rem; padding: 2px; }
-            .action-btns { gap: 2px; }
+            /* Tombol edit & hapus dirapatkan */
+            .action-btns { gap: 5px; justify-content: center; flex-wrap: wrap; }
+            .btn-icon { font-size: 14px; padding: 4px; }
         }
     </style>
 </head>
@@ -130,4 +132,200 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nama Barang</th>
+                        <th>Nama</th>
+                        <th class="hide-on-mobile">Kategori</th> 
+                        <th>Harga</th>
+                        <th style="text-align: center;">Stok</th>
+                        <th style="text-align: center;">Status</th>
+                        <th style="text-align: center;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-stok-body">
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="modalEdit">
+        <div class="modal-box">
+            <h3 class="modal-title">Edit Sisa Stok</h3>
+            <p id="namaBarangEdit" style="margin-bottom: 10px; font-weight: 500; font-size: 0.9rem; color: var(--primary-blue);"></p>
+            <div class="form-group">
+                <label>Jumlah Stok Baru</label>
+                <input type="number" id="inputStokBaru" min="0">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-batal" onclick="tutupModal('modalEdit')">Batal</button>
+                <button class="btn-simpan" id="btnSimpanEdit" onclick="simpanEditStok()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalHapus">
+        <div class="modal-box">
+            <h3 class="modal-title" style="color: var(--danger);">Hapus Barang?</h3>
+            <p style="font-size: 0.9rem;">Yakin mau ngehapus <strong id="namaBarangHapus"></strong>?</p>
+            <div class="modal-actions">
+                <button class="btn-batal" onclick="tutupModal('modalHapus')">Batal</button>
+                <button class="btn-simpan btn-bahaya" id="btnSimpanHapus" onclick="konfirmasiHapus()">Ya, Hapus</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalTambah">
+        <div class="modal-box">
+            <h3 class="modal-title">Tambah Barang</h3>
+            <div class="form-group"><label>Nama Barang</label><input type="text" id="inputNamaBarang"></div>
+            <div class="form-group"><label>Kategori</label><input type="text" id="inputKategori"></div>
+            <div class="form-group"><label>Harga Jual (Rp)</label><input type="number" id="inputHarga"></div>
+            <div class="form-group"><label>Stok Awal</label><input type="number" id="inputStokAwal"></div>
+            <div class="modal-actions">
+                <button class="btn-batal" onclick="tutupModal('modalTambah')">Batal</button>
+                <button class="btn-simpan" id="btnSimpanTambah" onclick="simpanBarangBaru()">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="produk.js"></script>
+
+    <script>
+       let idPilihan = null;
+
+        function renderTabel(data = daftarProduk) {
+            const tbody = document.getElementById('tabel-stok-body');
+            tbody.innerHTML = '';
+
+            data.forEach((item) => {
+                let statusBadge = '';
+                if (item.stok <= 0) {
+                    statusBadge = '<span class="badge badge-habis">Habis</span>';
+                } else if (item.stok <= 10) {
+                    statusBadge = '<span class="badge badge-menipis">Menipis</span>';
+                } else {
+                    statusBadge = '<span class="badge badge-aman">Aman</span>';
+                }
+
+                // Pengaman ekstra: Kalau item.nama kosong, dia bakal cari alternatif nama lain di data
+                let namaTampil = item.nama || item['nama barang'] || item.Nama || '-';
+                
+                // Pengaman ekstra: Kalau item.harga nggak ada, jangan sampai error
+                let hargaTampil = item.harga ? item.harga.toLocaleString('id-ID') : '0';
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${namaTampil}</td>
+                        <td class="hide-on-mobile">${item.kategori || '-'}</td>
+                        <td>Rp ${hargaTampil}</td>
+                        <td class="stok-angka" style="color: var(--primary-blue);">${item.stok}</td>
+                        <td style="text-align: center;">${statusBadge}</td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-icon btn-edit" onclick="bukaModalEdit('${item.id}')" title="Edit Stok"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button class="btn-icon btn-delete" onclick="bukaModalHapus('${item.id}')" title="Hapus"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+            
+            if (data.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: #9ca3af;">Barang tidak ditemukan</td></tr>`;
+            }
+        }
+
+        window.onload = () => {
+            if (typeof muatData === 'function') muatData();
+            else renderTabel();
+        };
+
+        function tutupModal(idModal) {
+            document.getElementById(idModal).style.display = 'none';
+            idPilihan = null;
+        }
+
+        function bukaModalEdit(id) {
+            idPilihan = id;
+            let item = daftarProduk.find(p => p.id == id);
+            if(item) {
+                document.getElementById('namaBarangEdit').innerText = item.nama || item['nama barang'];
+                document.getElementById('inputStokBaru').value = item.stok;
+                document.getElementById('modalEdit').style.display = 'flex';
+            } else {
+                alert("Gagal: Barang ini tidak memiliki ID sistem. Silakan hapus manual di Google Sheets lalu input ulang lewat web.");
+            }
+        }
+
+        async function simpanEditStok() {
+            let stokBaru = document.getElementById('inputStokBaru').value;
+            if (stokBaru !== "" && idPilihan !== null) {
+                let btn = document.getElementById('btnSimpanEdit');
+                btn.innerText = "Menyimpan...";
+                btn.disabled = true;
+                await kirimKeCloud({ action: 'update', id: idPilihan, stok: parseInt(stokBaru) });
+                btn.innerText = "Simpan";
+                btn.disabled = false;
+                tutupModal('modalEdit');
+            }
+        }
+
+        function bukaModalHapus(id) {
+            idPilihan = id;
+            let item = daftarProduk.find(p => p.id == id);
+            if(item) {
+                document.getElementById('namaBarangHapus').innerText = item.nama || item['nama barang'];
+                document.getElementById('modalHapus').style.display = 'flex';
+            } else {
+                alert("Gagal: Barang ini tidak memiliki ID sistem. Silakan hapus manual di Google Sheets lalu input ulang lewat web.");
+            }
+        }
+
+        async function konfirmasiHapus() {
+            if (idPilihan !== null) {
+                let btn = document.getElementById('btnSimpanHapus');
+                btn.innerText = "Menghapus...";
+                btn.disabled = true;
+                await kirimKeCloud({ action: 'hapus', id: idPilihan });
+                btn.innerText = "Ya, Hapus";
+                btn.disabled = false;
+                tutupModal('modalHapus');
+            }
+        }
+
+        function bukaModalTambah() {
+            document.getElementById('inputNamaBarang').value = "";
+            document.getElementById('inputKategori').value = "";
+            document.getElementById('inputHarga').value = "";
+            document.getElementById('inputStokAwal').value = "";
+            document.getElementById('modalTambah').style.display = 'flex';
+        }
+
+        async function simpanBarangBaru() {
+            let nama = document.getElementById('inputNamaBarang').value;
+            let kategori = document.getElementById('inputKategori').value;
+            let harga = document.getElementById('inputHarga').value;
+            let stok = document.getElementById('inputStokAwal').value;
+
+            if (nama && harga && stok) {
+                let btn = document.getElementById('btnSimpanTambah');
+                btn.innerText = "Menyimpan...";
+                btn.disabled = true;
+                await kirimKeCloud({ action: 'tambah', nama: nama, kategori: kategori, harga: parseInt(harga), stok: parseInt(stok) });
+                btn.innerText = "Simpan";
+                btn.disabled = false;
+                tutupModal('modalTambah');
+            } else {
+                alert("Harap isi nama, harga, dan stok!");
+            }
+        }
+
+        function cariBarang() {
+            let keyword = document.getElementById('inputPencarian').value.toLowerCase();
+            let hasilCari = daftarProduk.filter(item => {
+                let namaItem = item.nama || item['nama barang'] || "";
+                return namaItem.toLowerCase().includes(keyword);
+            });
+            renderTabel(hasilCari);
+        }
+    </script>
+</body>
+</html>
